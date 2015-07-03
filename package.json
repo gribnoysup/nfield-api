@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-nfield-api",
+  "version": "0.0.0",
+  "description": "Module to work with NField API with node.js",
+  "main": "nfieldapi.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nfield",
+    "api",
+    "nodejs"
+  ],
+  "author": "Sergey Petushkov",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.x.x",
+    "request": "^2.x.x"
+  }
+}
