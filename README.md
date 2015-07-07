@@ -1,1 +1,1 @@
-A module to use NField API with any node.js app
+Module to work with Nfield Manager API with node.js
