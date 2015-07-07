@@ -17,6 +17,7 @@ module.exports = (function Nfield () {
     
     /**
      * Reconfigures Nfield instance
+     * @alias configure
      * @param {Object=} nP - Parameters to configure Nfield user to use with API, must contain server url and user credentials
      * @param {Object=} rP - Parameters to configure request module, that is used to connect to API
      */
@@ -30,13 +31,13 @@ module.exports = (function Nfield () {
     /**
      * Response callback
      * @callback responseCallback
-     * @param {Error} Error
-     * @param {Object} Response
+     * @param {Error} err
+     * @param {Object} resp
      */
     
     /**
      * Sign in to the Nfield API<br>
-     * {@link https://api.nfieldmr.com/help/api/post-v1-signin POST v1/SignIn API documentation}
+     * {@link https://api.nfieldmr.com/help/api/post-v1-signin 'POST v1/SignIn' API documentation}
      * @param {Object} credentials - Sign in credentials
      * @param {String} credentials.Domain
      * @param {String} credentials.Username
