@@ -12,6 +12,8 @@ module.exports = (function Nfield () {
   function createNfieldInstance (nfieldParams, requestParams) {
     
     var request;
+    var token = { 'AuthenticationToken' : '', 'Timestamp' : 0 };
+    var connectInterval;
     var nfieldOptions = nfieldParams || {};
     var requestOptions = requestParams || {};
     
@@ -31,8 +33,8 @@ module.exports = (function Nfield () {
     /**
      * Response callback
      * @callback responseCallback
-     * @param {Error} err
-     * @param {Object} resp
+     * @param {Array} err
+     * @param {Array} resp
      */
     
     /**
@@ -42,7 +44,7 @@ module.exports = (function Nfield () {
      * @param {String} credentials.Domain
      * @param {String} credentials.Username
      * @param {String} credentials.Password
-     * @param {responseCallback} callback - Optional node-style callback
+     * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
     function signIn (credentials, callback) {
@@ -52,7 +54,54 @@ module.exports = (function Nfield () {
         json : credentials
       }).nodeify(callback);
     }
-
+    
+    /**
+     * Token update error callback
+     * @callback persistantErrorCallback
+     * @param {Array} error - Request response array
+     */
+    
+    /**
+     * Connects Nfield instance to Nfield API with parameters provided during initialization<br>
+     * Nfield API uses tokens that lasts for 15 minutes for authorisation, so as an options this method allows you to initiate an autoupdate for the token in Nfield instance, that fires every 12 minutes
+     * @param {Boolean} persistant - Initiate an autoupdate for token (true/false)
+     * @param {persistantErrorCallback} persistantErrorCallback - Callback, that fires if something goes wrong during token update
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function connect (persistant, persistantErrorCallback, callback) {
+      if (persistant === true) {
+        connectInterval = setInterval(function () {
+          signIn(nfieldOptions.credentials).then(function(data) {
+            if (data[0].statusCode == 200) {
+              token.AuthenticationToken = data[0].body.AuthenticationToken;
+              token.Timestamp = Date.now();
+            } else {
+              if (typeof persistantErrorCallback == 'function') persistantErrorCallback(data);
+            }
+          });
+        }, 1000 * 60 * 12);
+      }
+      
+      return new Promise(function (resolve, reject) {
+        if (token.AuthenticationToken !== '' && (Date.now() - token.Timestamp) < 1000 * 60 * 12) {
+          resolve(token);
+        } else {
+          signIn(nfieldOptions.credentials).then(function (data) {
+            if (data[0].statusCode == 200) {
+              token.AuthenticationToken = data[0].body.AuthenticationToken;
+              token.Timestamp = Date.now();
+              resolve(token);
+            } else {
+              reject(data);
+            }
+          }).catch(function (error) {
+            reject(error);
+          });
+        }
+      }).nodeify(callback);
+    }
+    
     updateParams(nfieldOptions, requestOptions);
     
     return {
@@ -61,7 +110,8 @@ module.exports = (function Nfield () {
       },
       signIn : function publicSignIn (cred, cb) {
         return signIn(cred, cb);
-      }
+      },
+      connect : connect
     };
     
   }
