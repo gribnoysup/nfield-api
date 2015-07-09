@@ -105,12 +105,8 @@ module.exports = (function Nfield () {
     updateParams(nfieldOptions, requestOptions);
     
     return {
-      configure : function publicConfigure (nP, rP) {
-        updateParams(nP, rP);
-      },
-      signIn : function publicSignIn (cred, cb) {
-        return signIn(cred, cb);
-      },
+      configure : updateParams,
+      signIn : signIn,
       connect : connect
     };
     
@@ -119,6 +115,10 @@ module.exports = (function Nfield () {
   /**
    * Creates new Nfield instance or returns existing one
    * @param {Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
+   * @param {String} nfieldParams.credentials.Domain
+   * @param {String} nfieldParams.credentials.Username
+   * @param {String} nfieldParams.credentials.Password
+   * @param {String} nfieldParams.server
    * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
    * @returns {Object} Returns Nfield instance
    */
