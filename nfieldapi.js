@@ -41,7 +41,7 @@ module.exports = (function Nfield () {
     
     /**
      * Sign in to the Nfield API<br>
-     * {@link https://api.nfieldmr.com/help/api/post-v1-signin 'POST v1/SignIn' API documentation}
+     * {@link https://api.nfieldmr.com/help/api/post-v1-signin 'POST v1/SignIn' API reference}
      * @param {Object} credentials - Sign in credentials
      * @param {String} credentials.Domain
      * @param {String} credentials.Username
@@ -51,7 +51,7 @@ module.exports = (function Nfield () {
      */
     function signIn (credentials, callback) {
       return request({
-        method : 'post',
+        method : 'POST',
         uri : 'v1/SignIn',
         json : credentials
       }).nodeify(callback);
@@ -61,14 +61,14 @@ module.exports = (function Nfield () {
     
     /**
      * Request survey fieldwork status
-     * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status 'GET v1/Surveys/{surveyId}/Fieldwork/Status' API documentation}
+     * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status 'GET v1/Surveys/{surveyId}/Fieldwork/Status' API reference}
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
     function getSurveyStatus (surveyId, callback) {
       return request({
-        method : 'get',
+        method : 'GET',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Status').replace('{surveyId}', surveyId),
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
@@ -78,14 +78,14 @@ module.exports = (function Nfield () {
     
     /**
      * Start survey
-     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start 'PUT v1/Surveys/{surveyId}/Fieldwork/Start' API documentation}
+     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start 'PUT v1/Surveys/{surveyId}/Fieldwork/Start' API reference}
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
     function startSurvey (surveyId, callback) {
       return request({
-        method : 'put',
+        method : 'PUT',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Start').replace('{surveyId}', surveyId),
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
@@ -95,14 +95,14 @@ module.exports = (function Nfield () {
     
     /**
      * Stop (pause) survey
-     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop 'PUT v1/Surveys/{surveyId}/Fieldwork/Stop' API documentation}
+     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop 'PUT v1/Surveys/{surveyId}/Fieldwork/Stop' API reference}
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
     function stopSurvey (surveyId, callback) {
       return request({
-        method : 'put',
+        method : 'PUT',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Stop').replace('{surveyId}', surveyId),
         json : {
           // TODO: Wainig for the answer from the NIPO support to clarify meaning of the variable, value is fixed for now
@@ -112,7 +112,35 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
-    }    
+    }
+    
+    // DefaultTexts
+    
+    /**
+     * Get specific/all default text(s) for the domain
+     * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts 'GET v1/DefaultTexts' API reference}
+     * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey 'GET v1/DefaultTexts/{translationKey}' API reference}
+     * @param {String=} translationKey - Translation key
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function getDefaultText (translationKey, callback) {
+      var reqURI = '';
+      
+      if (translationKey) {
+        reqURI = ('v1/DefaultTexts/{translationKey}').replace('{translationKey}', translationKey);
+      } else {
+        reqURI = 'v1/DefaultTexts';
+      }
+      
+      return request({
+        method : 'GET',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+  			}
+      }).nodeify(callback);
+    }
     
     /**
      * Token update error callback
@@ -181,7 +209,8 @@ module.exports = (function Nfield () {
       stop : disablePersistant,
       getSurveyStatus : getSurveyStatus,
       startSurvey : startSurvey,
-      stopSurvey : stopSurvey
+      stopSurvey : stopSurvey,
+      getDefaultText : getDefaultText
     };
     
   }
