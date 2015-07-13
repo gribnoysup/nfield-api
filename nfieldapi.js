@@ -73,6 +73,23 @@ module.exports = (function Nfield () {
     }
     
     /**
+     * Start survey
+     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start 'PUT v1/Surveys/{surveyId}/Fieldwork/Start' API documentation}
+     * @param {String} surveyId - Survey ID
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function startSurvey (surveyId, callback) {
+      return request({
+        method : 'put',
+        uri : ('v1/Surveys/{surveyId}/Fieldwork/Start').replace('{surveyId}', surveyId),
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+  			}
+      }).nodeify(callback);
+    }
+    
+    /**
      * Token update error callback
      * @callback persistantErrorCallback
      * @param {Array} error - Request response array
@@ -137,7 +154,8 @@ module.exports = (function Nfield () {
       signIn : signIn,
       connect : connect,
       stop : disablePersistant,
-      getSurveyStatus : getSurveyStatus
+      getSurveyStatus : getSurveyStatus,
+      startSurvey : startSurvey
     };
     
   }
