@@ -37,6 +37,8 @@ module.exports = (function Nfield () {
      * @param {Array} resp
      */
     
+    // SignIn
+    
     /**
      * Sign in to the Nfield API<br>
      * {@link https://api.nfieldmr.com/help/api/post-v1-signin 'POST v1/SignIn' API documentation}
@@ -54,6 +56,8 @@ module.exports = (function Nfield () {
         json : credentials
       }).nodeify(callback);
     }
+    
+    // SurveyFieldwork
     
     /**
      * Request survey fieldwork status
@@ -88,6 +92,27 @@ module.exports = (function Nfield () {
   			}
       }).nodeify(callback);
     }
+    
+    /**
+     * Stop (pause) survey
+     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop 'PUT v1/Surveys/{surveyId}/Fieldwork/Stop' API documentation}
+     * @param {String} surveyId - Survey ID
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function stopSurvey (surveyId, callback) {
+      return request({
+        method : 'put',
+        uri : ('v1/Surveys/{surveyId}/Fieldwork/Stop').replace('{surveyId}', surveyId),
+        json : {
+          // TODO: Wainig for the answer from the NIPO support to clarify meaning of the variable, value is fixed for now
+          'TerminateRunningInterviews' : true
+        },
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+  			}
+      }).nodeify(callback);
+    }    
     
     /**
      * Token update error callback
@@ -155,7 +180,8 @@ module.exports = (function Nfield () {
       connect : connect,
       stop : disablePersistant,
       getSurveyStatus : getSurveyStatus,
-      startSurvey : startSurvey
+      startSurvey : startSurvey,
+      stopSurvey : stopSurvey
     };
     
   }
