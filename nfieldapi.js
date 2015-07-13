@@ -70,7 +70,7 @@ module.exports = (function Nfield () {
      * @returns {Promise} Returns a promise of the request
      */
     function connect (persistant, persistantErrorCallback, callback) {
-      if (persistant === true) {
+      if (persistant === true && !connectInterval) {
         connectInterval = setInterval(function () {
           signIn(nfieldOptions.credentials).then(function(data) {
             if (data[0].statusCode == 200) {
@@ -81,6 +81,8 @@ module.exports = (function Nfield () {
             }
           });
         }, 1000 * 60 * 12);
+      } else {
+        console.log('Persistant connection already running');
       }
       
       return new Promise(function (resolve, reject) {
@@ -102,12 +104,22 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
+    /**
+     * Clears persistant token update interval
+     * @alias stop
+     */
+    function disablePersistant () {
+      clearInterval(connectInterval);
+      connectInterval = null;
+    }
+    
     updateParams(nfieldOptions, requestOptions);
     
     return {
       configure : updateParams,
       signIn : signIn,
-      connect : connect
+      connect : connect,
+      stop : disablePersistant
     };
     
   }
