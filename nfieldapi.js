@@ -56,6 +56,23 @@ module.exports = (function Nfield () {
     }
     
     /**
+     * Request survey fieldwork status
+     * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status 'GET v1/Surveys/{surveyId}/Fieldwork/Status' API documentation}
+     * @param {String} surveyId - Survey ID
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function getSurveyStatus (surveyId, callback) {
+      return request({
+        method : 'get',
+        uri : ('v1/Surveys/{surveyId}/Fieldwork/Status').replace('{surveyId}', surveyId),
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+  			}
+      }).nodeify(callback);
+    }
+    
+    /**
      * Token update error callback
      * @callback persistantErrorCallback
      * @param {Array} error - Request response array
@@ -81,7 +98,7 @@ module.exports = (function Nfield () {
             }
           });
         }, 1000 * 60 * 12);
-      } else {
+      } else if (persistant === true && connectInterval) {
         console.log('Persistant connection already running');
       }
       
@@ -119,7 +136,8 @@ module.exports = (function Nfield () {
       configure : updateParams,
       signIn : signIn,
       connect : connect,
-      stop : disablePersistant
+      stop : disablePersistant,
+      getSurveyStatus : getSurveyStatus
     };
     
   }
