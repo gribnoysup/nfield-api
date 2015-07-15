@@ -4,8 +4,9 @@ module.exports = (function Nfield () {
   
   var nfieldInstance;
   
-  /**
+  /** 
    * Creates Nfield instance
+   * @constructor NfieldInstance
    * @param {Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
    * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
    */
@@ -20,6 +21,8 @@ module.exports = (function Nfield () {
     
     /**
      * Reconfigures Nfield instance
+     * @memberof NfieldInstance
+     * @method configure
      * @param {Object=} nP - Parameters to configure Nfield user to use with API, must contain server url and user credentials
      * @param {Object=} rP - Parameters to configure request module, that is used to connect to API
      */
@@ -40,8 +43,12 @@ module.exports = (function Nfield () {
     // SignIn
     
     /**
-     * Sign in to the Nfield API<br>
-     * {@link https://api.nfieldmr.com/help/api/post-v1-signin 'POST v1/SignIn' API reference}
+     * <p>Sign in to the Nfield API</p>
+     * <p> Nfield API reference:
+     * <ul><li>[POST v1/SignIn]{@link https://api.nfieldmr.com/help/api/post-v1-signin}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method signIn
      * @param {Object} credentials - Sign in credentials
      * @param {String} credentials.Domain
      * @param {String} credentials.Username
@@ -60,8 +67,12 @@ module.exports = (function Nfield () {
     // SurveyFieldwork
     
     /**
-     * Request survey fieldwork status
-     * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status 'GET v1/Surveys/{surveyId}/Fieldwork/Status' API reference}
+     * <p>Request survey fieldwork status</p>
+     * <p> Nfield API reference:
+     * <ul><li>[GET v1/Surveys/{surveyId}/Fieldwork/Status]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method getSurveyStatus
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
@@ -77,8 +88,12 @@ module.exports = (function Nfield () {
     };
     
     /**
-     * Start survey
-     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start 'PUT v1/Surveys/{surveyId}/Fieldwork/Start' API reference}
+     * <p>Start survey</p>
+     * <p> Nfield API reference:
+     * <ul><li>[PUT v1/Surveys/{surveyId}/Fieldwork/Start]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method startSurvey
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
@@ -94,8 +109,12 @@ module.exports = (function Nfield () {
     };
     
     /**
-     * Stop (pause) survey
-     * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop 'PUT v1/Surveys/{surveyId}/Fieldwork/Stop' API reference}
+     * <p>Stop (pause) survey</p>
+     * <p> Nfield API reference:
+     * <ul><li>[PUT v1/Surveys/{surveyId}/Fieldwork/Stop]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method stopSurvey
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
@@ -117,9 +136,13 @@ module.exports = (function Nfield () {
     // DefaultTexts
     
     /**
-     * Get specific/all default text(s) for the domain
-     * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts 'GET v1/DefaultTexts' API reference}
-     * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey 'GET v1/DefaultTexts/{translationKey}' API reference}
+     * <p>Get specific/all default text(s) for the domain</p>
+     * <p>Nfield API reference:
+     * <ul><li>[GET v1/DefaultTexts]{@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts}</li>
+     * <li>[GET v1/DefaultTexts/{translationKey}]{@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method getDefaultText
      * @param {String=} translationKey - Translation key
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
@@ -149,10 +172,12 @@ module.exports = (function Nfield () {
      */
     
     /**
-     * Connects Nfield instance to Nfield API with parameters provided during initialization<br>
-     * Nfield API uses tokens that lasts for 15 minutes for authorisation, so as an options this method allows you to initiate an autoupdate for the token in Nfield instance, that fires every 12 minutes
-     * @param {Boolean} persistant - Initiate an autoupdate for token (true/false)
-     * @param {persistantErrorCallback} persistantErrorCallback - Callback, that fires if something goes wrong during token update
+     * <p>Connects Nfield instance to Nfield API with parameters provided during initialization</p>
+     * <p>Nfield API uses tokens that lasts for 15 minutes for authorisation, so as an options this method allows you to initiate an autoupdate for the token in Nfield instance, that fires every 12 minutes</p>
+     * @memberof NfieldInstance
+     * @method connect
+     * @param {Boolean=} persistant - Initiate an autoupdate for token (true/false)
+     * @param {persistantErrorCallback=} persistantErrorCallback - Callback, that fires if something goes wrong during token update
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
@@ -193,6 +218,8 @@ module.exports = (function Nfield () {
     
     /**
      * Clears persistant token update interval
+     * @memberof NfieldInstance
+     * @method stopPersistant
      */
     _this.stopPersistant = function stopPersistant () {
       clearInterval(connectInterval);
@@ -203,14 +230,16 @@ module.exports = (function Nfield () {
   }
   
   /**
-   * Creates new Nfield instance or returns existing one
+   * Creates new [Nfield instance]{@link NfieldInstance} or returns existing one
+   * @memberof Nfield
+   * @method init
    * @param {Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
    * @param {String} nfieldParams.credentials.Domain
    * @param {String} nfieldParams.credentials.Username
    * @param {String} nfieldParams.credentials.Password
    * @param {String} nfieldParams.server
    * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
-   * @returns {Object} Returns Nfield instance
+   * @returns {NfieldInstance} Returns Nfield instance
    */
   function init (nfieldParams, requestParams) {
     if (!nfieldInstance) {
