@@ -9,8 +9,9 @@ module.exports = (function Nfield () {
    * @param {Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
    * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
    */
-  function createNfieldInstance (nfieldParams, requestParams) {
+  function NfieldInstance (nfieldParams, requestParams) {
     
+    var _this = this;
     var request;
     var token = { 'AuthenticationToken' : '', 'Timestamp' : 0 };
     var connectInterval;
@@ -19,16 +20,15 @@ module.exports = (function Nfield () {
     
     /**
      * Reconfigures Nfield instance
-     * @alias configure
      * @param {Object=} nP - Parameters to configure Nfield user to use with API, must contain server url and user credentials
      * @param {Object=} rP - Parameters to configure request module, that is used to connect to API
      */
-    function updateParams (nP, rP) {
+    _this.configure = function configure (nP, rP) {
       nfieldOptions = nP || nfieldOptions;
       requestOptions = rP || requestOptions;
       requestOptions.baseUrl = nfieldOptions.server || 'https://api.nfieldmr.com/';
       request = Promise.promisify(require('request').defaults(requestOptions));
-    }
+    };
     
     /**
      * Response callback
@@ -49,13 +49,13 @@ module.exports = (function Nfield () {
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function signIn (credentials, callback) {
+    _this.signIn = function signIn (credentials, callback) {
       return request({
         method : 'POST',
         uri : 'v1/SignIn',
         json : credentials
       }).nodeify(callback);
-    }
+    };
     
     // SurveyFieldwork
     
@@ -66,7 +66,7 @@ module.exports = (function Nfield () {
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function getSurveyStatus (surveyId, callback) {
+    _this.getSurveyStatus = function getSurveyStatus (surveyId, callback) {
       return request({
         method : 'GET',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Status').replace('{surveyId}', surveyId),
@@ -74,7 +74,7 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
-    }
+    };
     
     /**
      * Start survey
@@ -83,7 +83,7 @@ module.exports = (function Nfield () {
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function startSurvey (surveyId, callback) {
+    _this.startSurvey = function startSurvey (surveyId, callback) {
       return request({
         method : 'PUT',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Start').replace('{surveyId}', surveyId),
@@ -91,7 +91,7 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
-    }
+    };
     
     /**
      * Stop (pause) survey
@@ -100,7 +100,7 @@ module.exports = (function Nfield () {
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function stopSurvey (surveyId, callback) {
+    _this.stopSurvey = function stopSurvey (surveyId, callback) {
       return request({
         method : 'PUT',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Stop').replace('{surveyId}', surveyId),
@@ -112,7 +112,7 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
-    }
+    };
     
     // DefaultTexts
     
@@ -124,7 +124,7 @@ module.exports = (function Nfield () {
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function getDefaultText (translationKey, callback) {
+    _this.getDefaultText = function getDefaultText (translationKey, callback) {
       var reqURI = '';
       
       if (translationKey) {
@@ -140,7 +140,7 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
-    }
+    };
     
     /**
      * Token update error callback
@@ -156,10 +156,10 @@ module.exports = (function Nfield () {
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function connect (persistant, persistantErrorCallback, callback) {
+    _this.connect = function connect (persistant, persistantErrorCallback, callback) {
       if (persistant === true && !connectInterval) {
         connectInterval = setInterval(function () {
-          signIn(nfieldOptions.credentials).then(function(data) {
+          _this.signIn(nfieldOptions.credentials).then(function(data) {
             if (data[0].statusCode == 200) {
               token.AuthenticationToken = data[0].body.AuthenticationToken;
               token.Timestamp = Date.now();
@@ -176,7 +176,7 @@ module.exports = (function Nfield () {
         if (token.AuthenticationToken !== '' && (Date.now() - token.Timestamp) < 1000 * 60 * 12) {
           resolve(token);
         } else {
-          signIn(nfieldOptions.credentials).then(function (data) {
+          _this.signIn(nfieldOptions.credentials).then(function (data) {
             if (data[0].statusCode == 200) {
               token.AuthenticationToken = data[0].body.AuthenticationToken;
               token.Timestamp = Date.now();
@@ -189,30 +189,17 @@ module.exports = (function Nfield () {
           });
         }
       }).nodeify(callback);
-    }
+    };
     
     /**
      * Clears persistant token update interval
-     * @alias stop
      */
-    function disablePersistant () {
+    _this.stopPersistant = function stopPersistant () {
       clearInterval(connectInterval);
       connectInterval = null;
-    }
-    
-    updateParams(nfieldOptions, requestOptions);
-    
-    return {
-      configure : updateParams,
-      signIn : signIn,
-      connect : connect,
-      stop : disablePersistant,
-      getSurveyStatus : getSurveyStatus,
-      startSurvey : startSurvey,
-      stopSurvey : stopSurvey,
-      getDefaultText : getDefaultText
     };
     
+    _this.configure(nfieldOptions, requestOptions);
   }
   
   /**
@@ -227,7 +214,9 @@ module.exports = (function Nfield () {
    */
   function init (nfieldParams, requestParams) {
     if (!nfieldInstance) {
-      nfieldInstance = createNfieldInstance(nfieldParams, requestParams);
+      nfieldInstance = new NfieldInstance(nfieldParams, requestParams);
+    } else {
+      nfieldInstance.configure(nfieldParams, nfieldParams);
     }
     return nfieldInstance;
   }
