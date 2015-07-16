@@ -116,16 +116,16 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance
      * @method stopSurvey
      * @param {String} surveyId - Survey ID
+     * @param {Boolean=} [terminate=false] - Terminate running interviews
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    _this.stopSurvey = function stopSurvey (surveyId, callback) {
+    _this.stopSurvey = function stopSurvey (surveyId, terminate, callback) {
       return request({
         method : 'PUT',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Stop').replace('{surveyId}', surveyId),
         json : {
-          // TODO: Wainig for the answer from the NIPO support to clarify meaning of the variable, value is fixed for now
-          'TerminateRunningInterviews' : true
+          'TerminateRunningInterviews' : terminate || false
         },
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
