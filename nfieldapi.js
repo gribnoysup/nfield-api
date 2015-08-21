@@ -23,12 +23,12 @@ module.exports = (function Nfield () {
      * Reconfigures Nfield instance
      * @memberof NfieldInstance
      * @method configure
-     * @param {Object=} nP - Parameters to configure Nfield user to use with API, must contain server url and user credentials
-     * @param {Object=} rP - Parameters to configure request module, that is used to connect to API
+     * @param {Object=} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
+     * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
      */
-    _this.configure = function configure (nP, rP) {
-      nfieldOptions = nP || nfieldOptions;
-      requestOptions = rP || requestOptions;
+    _this.configure = function configure (nfieldParams, requestParams) {
+      nfieldOptions = nfieldParams || nfieldOptions;
+      requestOptions = requestParams || requestOptions;
       requestOptions.baseUrl = nfieldOptions.server || 'https://api.nfieldmr.com/';
       request = Promise.promisify(require('request').defaults(requestOptions));
     };
@@ -164,6 +164,45 @@ module.exports = (function Nfield () {
   			}
       }).nodeify(callback);
     };
+    
+    // SurveyTranslations
+    
+    /**
+     * <p>Get specific/all translation(s) for a particular survey language</p>
+     * <p>Nfield API reference:
+     * <ul><li>[GET v1/Surveys/{surveyId}/Languages]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages}</li>
+     * <li>[GET v1/Surveys/{surveyId}/Languages/{languageId}]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method getTranslation
+     * @param {String} surveyId - Survey ID
+     * @param {Number} languageId - Language ID
+     * @param {String=} translationKey - Translation key
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    _this.getTranslation = function getTranslation (surveyId, languageId, translationKey, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
+        .replace('{surveyId}', surveyId)
+        .replace('{languageId}', languageId);
+      
+      if (translationKey) {
+        reqURI += ('/' + translationKey);
+      }
+      
+      return request({
+        method : 'GET',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    };
+    
+    
+    
+    
+    // Connect to API
     
     /**
      * Token update error callback
