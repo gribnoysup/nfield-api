@@ -165,7 +165,7 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     };
     
-    // SurveyTranslations
+    // SurveyTranslations +
     
     /**
      * <p>Get specific/all translation(s) for a particular survey language</p>
@@ -193,6 +193,94 @@ module.exports = (function Nfield () {
       return request({
         method : 'GET',
         uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    };
+    
+    /**
+     * <p>Delete specific translation for a particular survey language</p>
+     * <p>Nfield API reference:
+     * <ul><li>[DELETE v1/Surveys/{surveyId}/Languages/{languageId}/Translations/{translationKey}]{@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-languages-languageid-translations-translationkey}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method deleteTranslation
+     * @param {String} surveyId - Survey ID
+     * @param {Number} languageId - Language ID
+     * @param {String} translationKey - Translation key
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    _this.deleteTranslation = function deleteTranslation (surveyId, languageId, translationKey, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations/{translationKey}'
+        .replace('{surveyId}', surveyId)
+        .replace('{languageId}', languageId)
+        .replace('{translationKey}', translationKey);
+      
+      return request({
+        method : 'DELETE',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    };
+    
+    /**
+     * <p>Update specific translation for a particular survey language</p>
+     * <p>Nfield API reference:
+     * <ul><li>[PUT v1/Surveys/{surveyId}/Languages/{languageId}/Translations]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages-languageid-translations}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method updateTranslation
+     * @param {String} surveyId - Survey ID
+     * @param {Number} languageId - Language ID
+     * @param {Object} translationParams - Translation Object
+     * @param {String} translationParams.Name
+     * @param {String} translationParams.Text
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    _this.updateTranslation = function updateTranslation (surveyId, languageId, translationParams, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
+        .replace('{surveyId}', surveyId)
+        .replace('{languageId}', languageId);
+      
+      return request({
+        method : 'PUT',
+        uri : reqURI,
+        json : translationParams,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    };
+    
+    /**
+     * <p>Add translation for a particular survey language</p>
+     * <p>Nfield API reference:
+     * <ul><li>[POST v1/Surveys/{surveyId}/Languages/{languageId}/Translations]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages-languageid-translations}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method addTranslation
+     * @param {String} surveyId - Survey ID
+     * @param {Number} languageId - Language ID
+     * @param {Object} translationParams - Translation Object
+     * @param {String} translationParams.Name
+     * @param {String} translationParams.Text
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    _this.addTranslation = function addTranslation (surveyId, languageId, translationParams, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
+        .replace('{surveyId}', surveyId)
+        .replace('{languageId}', languageId);
+      
+      return request({
+        method : 'POST',
+        uri : reqURI,
+        json : translationParams,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
         }
@@ -266,7 +354,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance
      * @method updateLanguage
      * @param {String} surveyId - Survey ID
-     * @param {Object} languageParams - language object
+     * @param {Object} languageParams - Language object
      * @param {Number} languageParams.Id
      * @param {String} languageParams.Name
      * @param {responseCallback=} callback - Optional node-style callback
@@ -294,7 +382,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance
      * @method createLanguage
      * @param {String} surveyId - Survey ID
-     * @param {String} languageName - language name
+     * @param {String} languageName - Language name
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
