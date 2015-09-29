@@ -199,7 +199,7 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     };
     
-    // SurveyLanguages
+    // SurveyLanguages +
     
     /**
      * <p>Get specific/all languages for a specific survey</p>
@@ -255,9 +255,64 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
         }
       }).nodeify(callback);
-    };    
+    };
     
+    /**
+     * <p>Update the name of the specific language in survey</p>
+     * <p>Notice, that 'Default' language name could not be updated</p>
+     * <p>Nfield API reference:
+     * <ul><li>[PUT v1/Surveys/{surveyId}/Languages]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method updateLanguage
+     * @param {String} surveyId - Survey ID
+     * @param {Object} languageParams - language object
+     * @param {Number} languageParams.Id
+     * @param {String} languageParams.Name
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    _this.updateLanguage = function updateLanguage (surveyId, languageParams, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Languages'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'PUT',
+        uri : reqURI,
+        json : languageParams,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    };
     
+    /**
+     * <p>Create new language in specific survey</p>
+     * <p>Nfield API reference:
+     * <ul><li>[POST v1/Surveys/{surveyId}/Languages]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages}</li></ul>
+     * </p>
+     * @memberof NfieldInstance
+     * @method createLanguage
+     * @param {String} surveyId - Survey ID
+     * @param {String} languageName - language name
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    _this.createLanguage = function createLanguage (surveyId, languageName, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Languages'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'POST',
+        uri : reqURI,
+        json : {
+          'Name' : languageName
+        },
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    };
     
     // **************
     // Connect to API
