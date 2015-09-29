@@ -249,7 +249,7 @@ module.exports = (function Nfield () {
         .replace('{languageId}', languageId);
       
       return request({
-        method : 'GET',
+        method : 'DELETE',
         uri : reqURI,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
