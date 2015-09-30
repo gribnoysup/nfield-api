@@ -35,6 +35,7 @@ module.exports = (function Nfield () {
     
     /**
      * Response callback
+     * @memberof NfieldInstance
      * @callback responseCallback
      * @param {Array} err
      * @param {Array} resp
@@ -71,13 +72,13 @@ module.exports = (function Nfield () {
      * <p> Nfield API reference:
      * <ul><li>[GET v1/Surveys/{surveyId}/Fieldwork/Status]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status}</li></ul>
      * </p>
-     * @memberof NfieldInstance
-     * @method getSurveyStatus
+     * @memberof NfieldInstance.SurveyFieldwork
+     * @method get
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    _this.getSurveyStatus = function getSurveyStatus (surveyId, callback) {
+    function getSurveyStatus (surveyId, callback) {
       return request({
         method : 'GET',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Status').replace('{surveyId}', surveyId),
@@ -85,20 +86,20 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
-    };
+    }
     
     /**
      * <p>Start survey</p>
      * <p> Nfield API reference:
      * <ul><li>[PUT v1/Surveys/{surveyId}/Fieldwork/Start]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start}</li></ul>
      * </p>
-     * @memberof NfieldInstance
-     * @method startSurvey
+     * @memberof NfieldInstance.SurveyFieldwork
+     * @method start
      * @param {String} surveyId - Survey ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    _this.startSurvey = function startSurvey (surveyId, callback) {
+    function startSurvey (surveyId, callback) {
       return request({
         method : 'PUT',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Start').replace('{surveyId}', surveyId),
@@ -106,21 +107,21 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
-    };
+    }
     
     /**
      * <p>Stop (pause) survey</p>
      * <p> Nfield API reference:
      * <ul><li>[PUT v1/Surveys/{surveyId}/Fieldwork/Stop]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop}</li></ul>
      * </p>
-     * @memberof NfieldInstance
-     * @method stopSurvey
+     * @memberof NfieldInstance.SurveyFieldwork
+     * @method stop
      * @param {String} surveyId - Survey ID
      * @param {Boolean=} [terminate=false] - Terminate running interviews
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    _this.stopSurvey = function stopSurvey (surveyId, terminate, callback) {
+    function stopSurvey (surveyId, terminate, callback) {
       return request({
         method : 'PUT',
         uri : ('v1/Surveys/{surveyId}/Fieldwork/Stop').replace('{surveyId}', surveyId),
@@ -131,6 +132,17 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
+    }
+    
+    /** 
+     * Survey Fieldwork API
+     * @namespace SurveyFieldwork
+     * @memberof NfieldInstance
+     */
+    _this.SurveyFieldwork = {
+      get : getSurveyStatus,
+      start : startSurvey,
+      stop : stopSurvey
     };
     
     // DefaultTexts +
@@ -407,6 +419,7 @@ module.exports = (function Nfield () {
     
     /**
      * Token update error callback
+     * @memberof NfieldInstance
      * @callback persistantErrorCallback
      * @param {Array} error - Request response array
      */
