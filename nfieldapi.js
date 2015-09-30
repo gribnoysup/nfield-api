@@ -41,7 +41,7 @@ module.exports = (function Nfield () {
      * @param {Array} resp
      */
     
-    // SignIn +
+    // SignIn
     
     /**
      * <p>Sign in to the Nfield API</p>
@@ -65,7 +65,7 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     };
     
-    // SurveyFieldwork +
+    // SurveyFieldwork
     
     /**
      * <p>Request survey fieldwork status</p>
@@ -145,7 +145,7 @@ module.exports = (function Nfield () {
       stop : stopSurvey
     };
     
-    // DefaultTexts +
+    // DefaultTexts
     
     /**
      * <p>Get specific/all default text(s) for the domain</p>
@@ -186,7 +186,7 @@ module.exports = (function Nfield () {
       get : getDefaultText
     };
     
-    // SurveyTranslations +
+    // SurveyTranslations
     
     /**
      * <p>Get specific/all translation(s) for a particular survey language</p>
@@ -320,7 +320,7 @@ module.exports = (function Nfield () {
       update : updateTranslation 
     };
     
-    // SurveyLanguages +
+    // SurveyLanguages
     
     /**
      * <p>Get specific/all languages for a specific survey</p>
@@ -510,6 +510,86 @@ module.exports = (function Nfield () {
     _this.SurveySettings = {
       get : getSurveySettings,
       update : updateSurveySettings
+    };
+    
+    // SamplingPoints
+    
+    /**
+     * <p>Get specific/all survey sampling point(s)</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[GET v1/Surveys/{surveyId}/SamplingPoints]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-samplingpoints}</li>
+     *     <li>[GET v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-samplingpoints-samplingpointid}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SamplingPoints
+     * @method get
+     * @param {String} surveyId - Survey ID
+     * @param {Number=} samplingPointId - Sampling point ID
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function getSamplingPoints (surveyId, samplingPointId, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints'
+        .replace('{surveyId}', surveyId);
+      
+      if (samplingPointId) {
+        reqURI += '/' + samplingPointId;
+      }
+      
+      return request({
+        method : 'GET',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /**
+     * <p>Add new sampling point to survey</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[POST v1/Surveys/{surveyId}/SamplingPoints]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-samplingpoints}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SamplingPoints
+     * @method add
+     * @param {String} surveyId - Survey ID
+     * @param {Object} samplingPoint - Sampling Point
+     * @param {String} samplingPoint.SamplingPointId - Sampling point unique identifier
+     * @param {String} samplingPoint.Name - Name of the sampling point
+     * @param {String} samplingPoint.Description - Desctiption
+     * @param {String} samplingPoint.Instruction - Instruction link, this is a link to a pdf blob storage.
+     * @param {String} samplingPoint.FieldworkOfficeId - Associcated fieldwork office id.
+     * @param {String} samplingPoint.GroupId - Group id
+     * @param {String} samplingPoint.Stratum - Stratum the sampling point belongs to
+     * @param {String} samplingPoint.Kind - Kind of the sampling point
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function addSamplingPoints (surveyId, samplingPoint, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'POST',
+        uri : reqURI,
+        json : samplingPoint,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /** 
+     * Sampling Points API
+     * @namespace SamplingPoints
+     * @memberof NfieldInstance
+     */
+    _this.SamplingPoints = {
+      get : getSamplingPoints,
+      add : addSamplingPoints
     };
     
     // Connect to API
