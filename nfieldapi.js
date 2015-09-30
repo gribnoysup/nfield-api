@@ -154,12 +154,12 @@ module.exports = (function Nfield () {
      * <li>[GET v1/DefaultTexts/{translationKey}]{@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey}</li></ul>
      * </p>
      * @memberof NfieldInstance
-     * @method getDefaultText
+     * @method get
      * @param {String=} translationKey - Translation key
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    _this.getDefaultText = function getDefaultText (translationKey, callback) {
+    function getDefaultText (translationKey, callback) {
       var reqURI = '';
       
       if (translationKey) {
@@ -175,6 +175,15 @@ module.exports = (function Nfield () {
           'Authorization': 'Basic ' + token.AuthenticationToken
   			}
       }).nodeify(callback);
+    }
+    
+    /** 
+     * Default Texts API
+     * @namespace DefaultTexts
+     * @memberof NfieldInstance
+     */
+    _this.DefaultTexts = {
+      get : getDefaultText
     };
     
     // SurveyTranslations +
