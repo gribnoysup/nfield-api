@@ -153,7 +153,7 @@ module.exports = (function Nfield () {
      * <ul><li>[GET v1/DefaultTexts]{@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts}</li>
      * <li>[GET v1/DefaultTexts/{translationKey}]{@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey}</li></ul>
      * </p>
-     * @memberof NfieldInstance
+     * @memberof NfieldInstance.DefaultTexts
      * @method get
      * @param {String=} translationKey - Translation key
      * @param {responseCallback=} callback - Optional node-style callback
