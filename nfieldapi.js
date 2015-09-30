@@ -173,7 +173,7 @@ module.exports = (function Nfield () {
         uri : reqURI,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
-  			}
+        }
       }).nodeify(callback);
     }
     
@@ -447,7 +447,71 @@ module.exports = (function Nfield () {
       update : updateLanguage 
     };
     
-    // **************
+    // SurveySettings
+    
+    /**
+     * <p>Get survey settings</p>
+     * <p>Nfield API reference:
+     * <ul><li>[GET v1/Surveys/{surveyId}/Settings]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-settings}</li></ul>
+     * </p>
+     * @memberof NfieldInstance.SurveySettings
+     * @method get
+     * @param {String} surveyId - Survey ID
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function getSurveySettings (surveyId, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Settings'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'GET',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /**
+     * <p>Update survey settings</p>
+     * <p>Settings could be changed one option at a time only, their names are case sensitive</p>
+     * <p>Nfield API reference:
+     * <ul><li>[POST v1/Surveys/{surveyId}/Settings]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-settings}</li></ul>
+     * </p>
+     * @memberof NfieldInstance.SurveySettings
+     * @method update
+     * @param {String} surveyId - Survey ID
+     * @param {Object} option - Survey option
+     * @param {String} option.Name
+     * @param {String} option.Value
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function updateSurveySettings (surveyId, option, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Settings'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'POST',
+        uri : reqURI,
+        json : option,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /** 
+     * Survey Settings API
+     * @namespace SurveySettings
+     * @memberof NfieldInstance
+     */
+    _this.SurveySettings = {
+      get : getSurveySettings,
+      update : updateSurveySettings
+    };
+    
     // Connect to API
     
     /**
