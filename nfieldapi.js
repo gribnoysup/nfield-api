@@ -732,7 +732,7 @@ module.exports = (function Nfield () {
     
     /**
      * <p>Request data download for survey</p>
-     * <p>Although all booleans are marked as optional, at leat one data type and file type must be selected with 'true'</p>
+     * <p>Although all booleans are marked as optional, at leat one data type and file type must have 'true' value</p>
      * <p>Nfield API reference:
      *   <ul>
      *     <li>[POST v1/Surveys/{surveyId}/Data]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-data}</li>
