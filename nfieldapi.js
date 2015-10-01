@@ -728,6 +728,59 @@ module.exports = (function Nfield () {
       update : updateSurveyScript
     };
     
+    // SurveyData
+    
+    /**
+     * <p>Request data download for survey</p>
+     * <p>Although all booleans are marked as optional, at leat one data type and file type must be selected with 'true'</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[POST v1/Surveys/{surveyId}/Data]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-data}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SurveyData
+     * @method request
+     * @param {String} surveyId - Survey ID
+     * @param {Object} options - Download parameters
+     * @param {String} options.SurveyId
+     * @param {Boolean=} options.DownloadTestInterviewData
+     * @param {Boolean=} options.DownloadSuccessfulLiveInterviewData
+     * @param {Boolean=} options.DownloadRejectedLiveInterviewData
+     * @param {Boolean=} options.DownloadNotSuccessfulLiveInterviewData
+     * @param {Boolean=} options.DownloadSuspendedLiveInterviewData
+     * @param {Boolean=} options.DownloadParaData
+     * @param {Boolean=} options.DownloadCapturedMedia
+     * @param {Boolean=} options.DownloadClosedAnswerData
+     * @param {Boolean=} options.DownloadOpenAnswerData
+     * @param {String} options.DownloadFileName
+     * @param {String=} options.StartDate
+     * @param {String=} options.EndDate
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function requestSurveyData (surveyId, options, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Data'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'POST',
+        uri : reqURI,
+        json : options,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /** 
+     * Survey Data API
+     * @namespace SurveyData
+     * @memberof NfieldInstance
+     */
+    _this.SurveyData = {
+      request : requestSurveyData
+    };
+    
     // Connect to API
     
     /**
