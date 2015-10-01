@@ -660,6 +660,74 @@ module.exports = (function Nfield () {
       remove : removeSamplingPoints
     };
     
+    // SurveyScript
+    
+    /**
+     * <p>Get survey script</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[GET v1/Surveys/{surveyId}/Script]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-script}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SurveyScript
+     * @method get
+     * @param {String} surveyId - Survey ID
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function getSurveyScript (surveyId, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Script'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'GET',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /**
+     * <p>Set/update survey script</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[POST v1/Surveys/{surveyId}/Script]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-script}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SurveyScript
+     * @method update
+     * @param {String} surveyId - Survey ID
+     * @param {Object} scriptObj - The (odin) script for the survey
+     * @param {String} scriptObj.Script - Odin script
+     * @param {String} scriptObj.FileName - File name for script file
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function updateSurveyScript (surveyId, scriptObj, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Script'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'POST',
+        uri : reqURI,
+        json : scriptObj,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /** 
+     * Survey Script API
+     * @namespace SurveyScript
+     * @memberof NfieldInstance
+     */
+    _this.SurveyScript = {
+      get : getSurveyScript,
+      update : updateSurveyScript
+    };
+    
     // Connect to API
     
     /**
