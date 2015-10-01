@@ -525,7 +525,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SamplingPoints
      * @method get
      * @param {String} surveyId - Survey ID
-     * @param {Number=} samplingPointId - Sampling point ID
+     * @param {String=} samplingPointId - Sampling point ID
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
@@ -582,6 +582,72 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
+    /**
+     * <p>Update existing sampling point in survey</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[PATCH v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}]{@link https://api.nfieldmr.com/help/api/patch-v1-surveys-surveyid-samplingpoints-samplingpointid}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SamplingPoints
+     * @method update
+     * @param {String} surveyId - Survey ID
+     * @param {String=} samplingPointId - Sampling point unique identifier
+     * @param {Object} samplingPoint - Sampling Point
+     * @param {String} samplingPoint.SamplingPointId - Sampling point unique identifier
+     * @param {String} samplingPoint.Name - Name of the sampling point
+     * @param {String} samplingPoint.Description - Desctiption
+     * @param {String} samplingPoint.Instruction - Instruction link, this is a link to a pdf blob storage.
+     * @param {String} samplingPoint.FieldworkOfficeId - Associcated fieldwork office id.
+     * @param {String} samplingPoint.GroupId - Group id
+     * @param {String} samplingPoint.Stratum - Stratum the sampling point belongs to
+     * @param {String} samplingPoint.Kind - Kind of the sampling point
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function updateSamplingPoints (surveyId, samplingPointId, samplingPoint, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}'
+        .replace('{surveyId}', surveyId)
+        .replace('{samplingPointId}', samplingPointId || samplingPoint.SamplingPointId);
+      
+      return request({
+        method : 'PATCH',
+        uri : reqURI,
+        json : samplingPoint,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /**
+     * <p>Remove existing sampling point in survey</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[DELETE v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}]{@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-samplingpoints-samplingpointid}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SamplingPoints
+     * @method remove
+     * @param {String} surveyId - Survey ID
+     * @param {String} samplingPointId - Sampling point unique identifier
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function removeSamplingPoints (surveyId, samplingPointId, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}'
+        .replace('{surveyId}', surveyId)
+        .replace('{samplingPointId}', samplingPointId);
+      
+      return request({
+        method : 'DELETE',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
     /** 
      * Sampling Points API
      * @namespace SamplingPoints
@@ -589,7 +655,9 @@ module.exports = (function Nfield () {
      */
     _this.SamplingPoints = {
       get : getSamplingPoints,
-      add : addSamplingPoints
+      add : addSamplingPoints,
+      // update : updateSamplingPoints,
+      remove : removeSamplingPoints
     };
     
     // Connect to API
