@@ -728,7 +728,6 @@ module.exports = (function Nfield () {
     
     /**
      * <p>Request data download for survey</p>
-     * <p>Although all booleans are marked as optional, at leat one data type <b>and</b> file type must have 'true' value</p>
      * <p>Nfield API reference:
      *   <ul>
      *     <li>[POST v1/Surveys/{surveyId}/Data]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-data}</li>
@@ -737,20 +736,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SurveyData
      * @method request
      * @param {String} surveyId - Survey ID
-     * @param {Object} options - Download parameters
-     * @param {String} options.SurveyId
-     * @param {Boolean=} options.DownloadTestInterviewData
-     * @param {Boolean=} options.DownloadSuccessfulLiveInterviewData
-     * @param {Boolean=} options.DownloadRejectedLiveInterviewData
-     * @param {Boolean=} options.DownloadNotSuccessfulLiveInterviewData
-     * @param {Boolean=} options.DownloadSuspendedLiveInterviewData
-     * @param {Boolean=} options.DownloadParaData
-     * @param {Boolean=} options.DownloadCapturedMedia
-     * @param {Boolean=} options.DownloadClosedAnswerData
-     * @param {Boolean=} options.DownloadOpenAnswerData
-     * @param {String} options.DownloadFileName
-     * @param {String=} options.StartDate
-     * @param {String=} options.EndDate
+     * @param {NfieldDownloadParams} options - Download parameters
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
@@ -953,3 +939,24 @@ module.exports = (function Nfield () {
  * @property {String} credentials.Password - Password
  * @property {String} [server=https://api.nfieldmr.com/] - Server URL
  */
+ 
+/**
+ * <p>Nfield data download parameters</p>
+ * <p>Although all booleans are marked as optional, at leat one data type <b>and</b> file type must have 'true' value</p>
+ * @memberof NfieldInstance
+ * @typedef {Object} NfieldDownloadParams
+ * @property {String} NfieldDownloadParams.SurveyId
+ * @property {Boolean=} NfieldDownloadParams.DownloadTestInterviewData
+ * @property {Boolean=} NfieldDownloadParams.DownloadSuccessfulLiveInterviewData
+ * @property {Boolean=} NfieldDownloadParams.DownloadRejectedLiveInterviewData
+ * @property {Boolean=} NfieldDownloadParams.DownloadNotSuccessfulLiveInterviewData
+ * @property {Boolean=} NfieldDownloadParams.DownloadSuspendedLiveInterviewData
+ * @property {Boolean=} NfieldDownloadParams.DownloadParaData
+ * @property {Boolean=} NfieldDownloadParams.DownloadCapturedMedia
+ * @property {Boolean=} NfieldDownloadParams.DownloadClosedAnswerData
+ * @property {Boolean=} NfieldDownloadParams.DownloadOpenAnswerData
+ * @property {String} NfieldDownloadParams.DownloadFileName
+ * @property {UTCDate=} NfieldDownloadParams.StartDate
+ * @property {UTCDate=} NfieldDownloadParams.EndDate
+ */
+ 
