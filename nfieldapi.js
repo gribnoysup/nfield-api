@@ -7,7 +7,7 @@ module.exports = (function Nfield () {
   /** 
    * Creates Nfield instance
    * @constructor NfieldInstance
-   * @param {Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
+   * @param {NfieldParams} nfieldParams - Parameters to configure Nfield user to use with API, must contain user credentials
    * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
    */
   function NfieldInstance (nfieldParams, requestParams) {
@@ -23,8 +23,8 @@ module.exports = (function Nfield () {
      * Reconfigures Nfield instance
      * @memberof NfieldInstance
      * @method configure
-     * @param {Object=} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
-     * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
+     * @param {?Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
+     * @param {?Object} requestParams - Parameters to configure request module, that is used to connect to API
      */
     _this.configure = function configure (nfieldParams, requestParams) {
       nfieldOptions = nfieldParams || nfieldOptions;
@@ -909,11 +909,7 @@ module.exports = (function Nfield () {
    * Creates new [Nfield instance]{@link NfieldInstance} or returns existing one
    * @memberof Nfield
    * @method init
-   * @param {Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
-   * @param {String} nfieldParams.credentials.Domain
-   * @param {String} nfieldParams.credentials.Username
-   * @param {String} nfieldParams.credentials.Password
-   * @param {String} nfieldParams.server
+   * @param {NfieldParams} nfieldParams - Parameters to configure Nfield user to use with API, must contain user credentials
    * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
    * @returns {NfieldInstance} Returns Nfield instance
    */
@@ -945,4 +941,15 @@ module.exports = (function Nfield () {
  * @callback responseCallback
  * @param {Array} err
  * @param {Array} resp
+ */
+ 
+/**
+ * Parameters to configure Nfield user to use with API, must contain user credentials
+ * @memberof NfieldInstance
+ * @typedef {Object} NfieldParams
+ * @property {Object} credentials - API user credentials
+ * @property {String} credentials.Domain - Domain
+ * @property {String} credentials.Username - Username
+ * @property {String} credentials.Password - Password
+ * @property {String} [server=https://api.nfieldmr.com/] - Server URL
  */
