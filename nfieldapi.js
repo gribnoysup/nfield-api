@@ -33,14 +33,6 @@ module.exports = (function Nfield () {
       request = Promise.promisify(require('request').defaults(requestOptions));
     };
     
-    /**
-     * Response callback
-     * @memberof NfieldInstance
-     * @callback responseCallback
-     * @param {Array} err
-     * @param {Array} resp
-     */
-    
     // SignIn
     
     /**
@@ -856,13 +848,6 @@ module.exports = (function Nfield () {
     // Connect to API
     
     /**
-     * Token update error callback
-     * @memberof NfieldInstance
-     * @callback persistantErrorCallback
-     * @param {Array} error - Request response array
-     */
-    
-    /**
      * <p>Connects Nfield instance to Nfield API with parameters provided during initialization</p>
      * <p>Nfield API uses tokens that lasts for 15 minutes for authorisation, so as an options this method allows you to initiate an autoupdate for the token in Nfield instance, that fires every 12 minutes</p>
      * @memberof NfieldInstance
@@ -946,3 +931,18 @@ module.exports = (function Nfield () {
   };
   
 })();
+
+/**
+ * Token update error callback
+ * @memberof NfieldInstance
+ * @callback persistantErrorCallback
+ * @param {Array} error - Request response array
+ */
+ 
+/**
+ * Response callback
+ * @memberof NfieldInstance
+ * @callback responseCallback
+ * @param {Array} err
+ * @param {Array} resp
+ */
