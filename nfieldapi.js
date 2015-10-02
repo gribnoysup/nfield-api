@@ -581,7 +581,6 @@ module.exports = (function Nfield () {
         }
       }).nodeify(callback);
     }
-
     
     /**
      * <p>Remove existing sampling point in survey</p>
@@ -741,6 +740,74 @@ module.exports = (function Nfield () {
      */
     _this.SurveyData = {
       request : requestSurveyData
+    };
+    
+    // SurveyPublish
+    
+    /**
+     * <p>Get publish state of survey</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[GET v1/Surveys/{surveyId}/Publish]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-publish}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SurveyScript
+     * @method get
+     * @param {String} surveyId - Survey ID
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function getSurveyPublish (surveyId, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Publish'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'GET',
+        uri : reqURI,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /**
+     * <p>Publish survey</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[PUT v1/Surveys/{surveyId}/Publish]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-publish}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SurveyScript
+     * @method publish
+     * @param {String} surveyId - Survey ID
+     * @param {Object} publishParams - Publish parameters
+     * @param {Number} publishParams.PackageType - Interview package type (1 - Live, 2 - Test)
+     * @param {Number} publishParams.ForceUpgrade - Force Upgrade option (0 - false, 1 - true) <i>There is no explanation what this option does on Nfiled API documentation page, but their manager website always publishes with this option turned off with no way to turn it on</i>
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function publishSurveyPublish (surveyId, publishParams, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/Publish'
+        .replace('{surveyId}', surveyId);
+      
+      return request({
+        method : 'PUT',
+        uri : reqURI,
+        json : publishParams,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /** 
+     * Survey Publish API
+     * @namespace SurveyPublish
+     * @memberof NfieldInstance
+     */
+    _this.SurveyPublish = {
+      get : getSurveyPublish,
+      publish : publishSurveyPublish
     };
     
     // Connect to API
