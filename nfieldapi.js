@@ -583,6 +583,48 @@ module.exports = (function Nfield () {
     }
     
     /**
+     * <p>Update existing sampling point in survey</p>
+     * <p>You can't update SamplingPointId, Instruction or Kind of existing Sampling Point</p>
+     * <p>Nfield API reference:
+     *   <ul>
+     *     <li>[PATCH v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}]{@link https://api.nfieldmr.com/help/api/patch-v1-surveys-surveyid-samplingpoints-samplingpointid}</li>
+     *   </ul>
+     * </p>
+     * @memberof NfieldInstance.SamplingPoints
+     * @method update
+     * @param {String} surveyId - Survey ID
+     * @param {Object} samplingPoint - Sampling Point
+     * @param {String} samplingPoint.SamplingPointId - Sampling point unique identifier
+     * @param {String} samplingPoint.Name - Name of the sampling point
+     * @param {String} samplingPoint.Description - Desctiption
+     * @param {String} samplingPoint.Instruction - Instruction link, this is a link to a pdf blob storage.
+     * @param {String} samplingPoint.FieldworkOfficeId - Associcated fieldwork office id.
+     * @param {String} samplingPoint.GroupId - Group id
+     * @param {String} samplingPoint.Stratum - Stratum the sampling point belongs to
+     * @param {String} samplingPoint.Kind - Kind of the sampling point
+     * @param {responseCallback=} callback - Optional node-style callback
+     * @returns {Promise} Returns a promise of the request
+     */
+    function updateSamplingPoints (surveyId, samplingPoint, callback) {
+      var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}'
+        .replace('{surveyId}', surveyId)
+        .replace('{samplingPointId}', samplingPoint.SamplingPointId);
+      
+      delete samplingPoint.SamplingPointId;
+      delete samplingPoint.Instruction;
+      delete samplingPoint.Kind;
+      
+      return request({
+        method : 'PATCH',
+        uri : reqURI,
+        json : samplingPoint,
+        headers : {
+          'Authorization': 'Basic ' + token.AuthenticationToken
+        }
+      }).nodeify(callback);
+    }
+    
+    /**
      * <p>Remove existing sampling point in survey</p>
      * <p>Nfield API reference:
      *   <ul>
@@ -618,6 +660,7 @@ module.exports = (function Nfield () {
     _this.SamplingPoints = {
       get : getSamplingPoints,
       add : addSamplingPoints,
+      update : updateSamplingPoints,
       remove : removeSamplingPoints
     };
     
