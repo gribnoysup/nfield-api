@@ -249,13 +249,11 @@ module.exports = (function Nfield () {
      * @method update
      * @param {String} surveyId - Survey ID
      * @param {Number} languageId - Language ID
-     * @param {Object} translationParams - Translation Object
-     * @param {String} translationParams.Name
-     * @param {String} translationParams.Text
+     * @param {TranslationObject} translation - Translation Object
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function updateTranslation (surveyId, languageId, translationParams, callback) {
+    function updateTranslation (surveyId, languageId, translation, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
         .replace('{surveyId}', surveyId)
         .replace('{languageId}', languageId);
@@ -263,7 +261,7 @@ module.exports = (function Nfield () {
       return request({
         method : 'PUT',
         uri : reqURI,
-        json : translationParams,
+        json : translation,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
         }
@@ -279,13 +277,11 @@ module.exports = (function Nfield () {
      * @method add
      * @param {String} surveyId - Survey ID
      * @param {Number} languageId - Language ID
-     * @param {Object} translationParams - Translation Object
-     * @param {String} translationParams.Name
-     * @param {String} translationParams.Text
+     * @param {TranslationObject} translation - Translation Object
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function addTranslation (surveyId, languageId, translationParams, callback) {
+    function addTranslation (surveyId, languageId, translation, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
         .replace('{surveyId}', surveyId)
         .replace('{languageId}', languageId);
@@ -293,7 +289,7 @@ module.exports = (function Nfield () {
       return request({
         method : 'POST',
         uri : reqURI,
-        json : translationParams,
+        json : translation,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
         }
@@ -379,20 +375,18 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SurveyLanguages
      * @method update
      * @param {String} surveyId - Survey ID
-     * @param {Object} languageParams - Language object
-     * @param {Number} languageParams.Id
-     * @param {String} languageParams.Name
+     * @param {LanguageObject} language - Language object
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function updateLanguage (surveyId, languageParams, callback) {
+    function updateLanguage (surveyId, language, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages'
         .replace('{surveyId}', surveyId);
       
       return request({
         method : 'PUT',
         uri : reqURI,
-        json : languageParams,
+        json : language,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
         }
@@ -474,9 +468,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SurveySettings
      * @method update
      * @param {String} surveyId - Survey ID
-     * @param {Object} option - Survey option
-     * @param {String} option.Name
-     * @param {String} option.Value
+     * @param {SurveySettingObject} option - Survey Setting object
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
@@ -548,15 +540,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SamplingPoints
      * @method add
      * @param {String} surveyId - Survey ID
-     * @param {Object} samplingPoint - Sampling Point
-     * @param {String} samplingPoint.SamplingPointId - Sampling point unique identifier
-     * @param {String} samplingPoint.Name - Name of the sampling point
-     * @param {String} samplingPoint.Description - Desctiption
-     * @param {String} samplingPoint.Instruction - Instruction link, this is a link to a pdf blob storage.
-     * @param {String} samplingPoint.FieldworkOfficeId - Associcated fieldwork office id.
-     * @param {String} samplingPoint.GroupId - Group id
-     * @param {String} samplingPoint.Stratum - Stratum the sampling point belongs to
-     * @param {String} samplingPoint.Kind - Kind of the sampling point
+     * @param {SamplingPointObject} samplingPoint - Sampling Point
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
@@ -585,15 +569,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SamplingPoints
      * @method update
      * @param {String} surveyId - Survey ID
-     * @param {Object} samplingPoint - Sampling Point
-     * @param {String} samplingPoint.SamplingPointId - Sampling point unique identifier
-     * @param {String} samplingPoint.Name - Name of the sampling point
-     * @param {String} samplingPoint.Description - Desctiption
-     * @param {String} samplingPoint.Instruction - Instruction link, this is a link to a pdf blob storage.
-     * @param {String} samplingPoint.FieldworkOfficeId - Associcated fieldwork office id.
-     * @param {String} samplingPoint.GroupId - Group id
-     * @param {String} samplingPoint.Stratum - Stratum the sampling point belongs to
-     * @param {String} samplingPoint.Kind - Kind of the sampling point
+     * @param {SamplingPointObject} samplingPoint - Sampling Point
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
@@ -694,20 +670,18 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SurveyScript
      * @method update
      * @param {String} surveyId - Survey ID
-     * @param {Object} scriptObj - The (odin) script for the survey
-     * @param {String} scriptObj.Script - Odin script
-     * @param {String} scriptObj.FileName - File name for script file
+     * @param {SurveyScriptObject} script - The (odin) script for the survey
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function updateSurveyScript (surveyId, scriptObj, callback) {
+    function updateSurveyScript (surveyId, script, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Script'
         .replace('{surveyId}', surveyId);
       
       return request({
         method : 'POST',
         uri : reqURI,
-        json : scriptObj,
+        json : script,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
         }
@@ -736,18 +710,18 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SurveyData
      * @method request
      * @param {String} surveyId - Survey ID
-     * @param {NfieldDownloadParams} options - Download parameters
+     * @param {NfieldDownloadParams} downloadOptions - Download parameters
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
-    function requestSurveyData (surveyId, options, callback) {
+    function requestSurveyData (surveyId, downloadOptions, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Data'
         .replace('{surveyId}', surveyId);
       
       return request({
         method : 'POST',
         uri : reqURI,
-        json : options,
+        json : downloadOptions,
         headers : {
           'Authorization': 'Basic ' + token.AuthenticationToken
         }
@@ -801,9 +775,7 @@ module.exports = (function Nfield () {
      * @memberof NfieldInstance.SurveyScript
      * @method publish
      * @param {String} surveyId - Survey ID
-     * @param {Object} publishParams - Publish parameters
-     * @param {Number} publishParams.PackageType - Interview package type (1 - Live, 2 - Test)
-     * @param {Number} publishParams.ForceUpgrade - Force Upgrade option (0 - false, 1 - true) <i>There is no explanation what this option does on Nfiled API documentation page, but their manager website always publishes with this option turned off with no way to turn it on</i>
+     * @param {PublishParams} publishParams - Publish parameters
      * @param {responseCallback=} callback - Optional node-style callback
      * @returns {Promise} Returns a promise of the request
      */
@@ -945,18 +917,71 @@ module.exports = (function Nfield () {
  * <p>Although all booleans are marked as optional, at leat one data type <b>and</b> file type must have 'true' value</p>
  * @memberof NfieldInstance
  * @typedef {Object} NfieldDownloadParams
- * @property {String} NfieldDownloadParams.SurveyId
- * @property {Boolean=} NfieldDownloadParams.DownloadTestInterviewData
- * @property {Boolean=} NfieldDownloadParams.DownloadSuccessfulLiveInterviewData
- * @property {Boolean=} NfieldDownloadParams.DownloadRejectedLiveInterviewData
- * @property {Boolean=} NfieldDownloadParams.DownloadNotSuccessfulLiveInterviewData
- * @property {Boolean=} NfieldDownloadParams.DownloadSuspendedLiveInterviewData
- * @property {Boolean=} NfieldDownloadParams.DownloadParaData
- * @property {Boolean=} NfieldDownloadParams.DownloadCapturedMedia
- * @property {Boolean=} NfieldDownloadParams.DownloadClosedAnswerData
- * @property {Boolean=} NfieldDownloadParams.DownloadOpenAnswerData
- * @property {String} NfieldDownloadParams.DownloadFileName
- * @property {UTCDate=} NfieldDownloadParams.StartDate
- * @property {UTCDate=} NfieldDownloadParams.EndDate
+ * @property {String} SurveyId
+ * @property {String} DownloadFileName
+ * @property {Boolean=} DownloadTestInterviewData
+ * @property {Boolean=} DownloadSuccessfulLiveInterviewData
+ * @property {Boolean=} DownloadRejectedLiveInterviewData
+ * @property {Boolean=} DownloadNotSuccessfulLiveInterviewData
+ * @property {Boolean=} DownloadSuspendedLiveInterviewData
+ * @property {Boolean=} DownloadParaData
+ * @property {Boolean=} DownloadCapturedMedia
+ * @property {Boolean=} DownloadClosedAnswerData
+ * @property {Boolean=} DownloadOpenAnswerData
+ * @property {UTCDate=} StartDate
+ * @property {UTCDate=} EndDate
  */
  
+/**
+ * Translation Object
+ * @memberof NfieldInstance
+ * @typedef {Object} TranslationObject
+ * @property {String} Name - Translation key
+ * @property {String} Text - Translation text
+ */
+ 
+/**
+ * Language object
+ * @memberof NfieldInstance
+ * @typedef {Object} LanguageObject
+ * @property {Number} Id - Language ID
+ * @property {String} Name - Language name
+ */
+ 
+/**
+ * Survey Setting object
+ * @memberof NfieldInstance
+ * @typedef {Object} SurveySettingObject
+ * @property {String} Name - Option name
+ * @property {String} Value - Option value
+ */
+ 
+/**
+ * Оdin script for the survey object
+ * @memberof NfieldInstance
+ * @typedef {Object} SurveyScriptObject
+ * @property {String} Script - Odin script (q-file)
+ * @property {String} FileName - File name for script file
+ */
+
+/**
+ * Sampling Point object
+ * @memberof NfieldInstance
+ * @typedef {Object} SamplingPointObject
+ * @property {String} SamplingPointId - Sampling point unique identifier
+ * @property {String} Name - Name of the sampling point
+ * @property {String} Description - Desctiption
+ * @property {String} Instruction - Instruction link, this is a link to a pdf blob storage.
+ * @property {String} FieldworkOfficeId - Associcated fieldwork office id.
+ * @property {String} GroupId - Group id
+ * @property {String} Stratum - Stratum the sampling point belongs to
+ * @property {String} Kind - Kind of the sampling point
+ */
+ 
+/**
+ * Publish parameters
+ * @memberof NfieldInstance
+ * @typedef {Object} PublishParams
+ * @property {Number} PackageType - Interview package type (1 - Live, 2 - Test)
+ * @property {Number} ForceUpgrade - Force Upgrade option (0 - false, 1 - true) <i>There is no explanation what this option does on Nfiled API documentation page, but their manager website always publishes with this option turned off with no way to turn it on</i>
+ */
