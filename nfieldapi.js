@@ -3,13 +3,7 @@ module.exports = (function Nfield () {
   var Promise = require('bluebird');
   
   var nfieldInstance;
-  
-  /** 
-   * Creates Nfield instance
-   * @constructor NfieldInstance
-   * @param {NfieldParams} nfieldParams - Parameters to configure Nfield user to use with API, must contain user credentials
-   * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
-   */
+
   function NfieldInstance (nfieldParams, requestParams) {
     
     var _this = this;
@@ -19,13 +13,6 @@ module.exports = (function Nfield () {
     var nfieldOptions = nfieldParams || {};
     var requestOptions = requestParams || {};
     
-    /**
-     * Reconfigures Nfield instance
-     * @memberof NfieldInstance
-     * @method configure
-     * @param {?Object} nfieldParams - Parameters to configure Nfield user to use with API, must contain server url and user credentials
-     * @param {?Object} requestParams - Parameters to configure request module, that is used to connect to API
-     */
     _this.configure = function configure (nfieldParams, requestParams) {
       nfieldOptions = nfieldParams || nfieldOptions;
       requestOptions = requestParams || requestOptions;
@@ -35,20 +22,6 @@ module.exports = (function Nfield () {
     
     // SignIn
     
-    /**
-     * <p>Sign in to the Nfield API</p>
-     * <p> Nfield API reference:
-     * <ul><li>[POST v1/SignIn]{@link https://api.nfieldmr.com/help/api/post-v1-signin}</li></ul>
-     * </p>
-     * @memberof NfieldInstance
-     * @method signIn
-     * @param {Object} credentials - Sign in credentials
-     * @param {String} credentials.Domain
-     * @param {String} credentials.Username
-     * @param {String} credentials.Password
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     _this.signIn = function signIn (credentials, callback) {
       return request({
         method : 'POST',
@@ -59,17 +32,6 @@ module.exports = (function Nfield () {
     
     // SurveyFieldwork
     
-    /**
-     * <p>Request survey fieldwork status</p>
-     * <p> Nfield API reference:
-     * <ul><li>[GET v1/Surveys/{surveyId}/Fieldwork/Status]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyFieldwork
-     * @method get
-     * @param {String} surveyId - Survey ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getSurveyStatus (surveyId, callback) {
       return request({
         method : 'GET',
@@ -80,17 +42,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Start survey</p>
-     * <p> Nfield API reference:
-     * <ul><li>[PUT v1/Surveys/{surveyId}/Fieldwork/Start]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyFieldwork
-     * @method start
-     * @param {String} surveyId - Survey ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function startSurvey (surveyId, callback) {
       return request({
         method : 'PUT',
@@ -101,18 +52,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Stop (pause) survey</p>
-     * <p> Nfield API reference:
-     * <ul><li>[PUT v1/Surveys/{surveyId}/Fieldwork/Stop]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyFieldwork
-     * @method stop
-     * @param {String} surveyId - Survey ID
-     * @param {Boolean=} [terminate=false] - Terminate running interviews
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function stopSurvey (surveyId, terminate, callback) {
       return request({
         method : 'PUT',
@@ -126,11 +65,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Survey Fieldwork API
-     * @namespace SurveyFieldwork
-     * @memberof NfieldInstance
-     */
     _this.SurveyFieldwork = {
       get : getSurveyStatus,
       start : startSurvey,
@@ -139,18 +73,6 @@ module.exports = (function Nfield () {
     
     // DefaultTexts
     
-    /**
-     * <p>Get specific/all default text(s) for the domain</p>
-     * <p>Nfield API reference:
-     * <ul><li>[GET v1/DefaultTexts]{@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts}</li>
-     * <li>[GET v1/DefaultTexts/{translationKey}]{@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.DefaultTexts
-     * @method get
-     * @param {String=} translationKey - Translation key
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getDefaultText (translationKey, callback) {
       var reqURI = '';
       
@@ -169,31 +91,12 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Default Texts API
-     * @namespace DefaultTexts
-     * @memberof NfieldInstance
-     */
     _this.DefaultTexts = {
       get : getDefaultText
     };
     
     // SurveyTranslations
     
-    /**
-     * <p>Get specific/all translation(s) for a particular survey language</p>
-     * <p>Nfield API reference:
-     * <ul><li>[GET v1/Surveys/{surveyId}/Languages/{languageId}/Translations]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid-translations}</li>
-     * <li>[GET v1/Surveys/{surveyId}/Languages/{languageId}/Translations/{translationKey}]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid-translations-translationkey}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyTranslations
-     * @method get
-     * @param {String} surveyId - Survey ID
-     * @param {Number} languageId - Language ID
-     * @param {String=} translationKey - Translation key
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getTranslation (surveyId, languageId, translationKey, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
         .replace('{surveyId}', surveyId)
@@ -212,19 +115,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Remove specific translation for a particular survey language</p>
-     * <p>Nfield API reference:
-     * <ul><li>[DELETE v1/Surveys/{surveyId}/Languages/{languageId}/Translations/{translationKey}]{@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-languages-languageid-translations-translationkey}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyTranslations
-     * @method remove
-     * @param {String} surveyId - Survey ID
-     * @param {Number} languageId - Language ID
-     * @param {String} translationKey - Translation key
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function removeTranslation (surveyId, languageId, translationKey, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations/{translationKey}'
         .replace('{surveyId}', surveyId)
@@ -240,19 +130,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
   
-    /**
-     * <p>Update specific translation for a particular survey language</p>
-     * <p>Nfield API reference:
-     * <ul><li>[PUT v1/Surveys/{surveyId}/Languages/{languageId}/Translations]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages-languageid-translations}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyTranslations
-     * @method update
-     * @param {String} surveyId - Survey ID
-     * @param {Number} languageId - Language ID
-     * @param {TranslationObject} translation - Translation Object
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function updateTranslation (surveyId, languageId, translation, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
         .replace('{surveyId}', surveyId)
@@ -268,19 +145,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Add translation for a particular survey language</p>
-     * <p>Nfield API reference:
-     * <ul><li>[POST v1/Surveys/{surveyId}/Languages/{languageId}/Translations]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages-languageid-translations}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyTranslations
-     * @method add
-     * @param {String} surveyId - Survey ID
-     * @param {Number} languageId - Language ID
-     * @param {TranslationObject} translation - Translation Object
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function addTranslation (surveyId, languageId, translation, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}/Translations'
         .replace('{surveyId}', surveyId)
@@ -296,11 +160,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Survey Translations API
-     * @namespace SurveyTranslations
-     * @memberof NfieldInstance
-     */
     _this.SurveyTranslations = {
       get : getTranslation,
       remove : removeTranslation,
@@ -310,19 +169,6 @@ module.exports = (function Nfield () {
     
     // SurveyLanguages
     
-    /**
-     * <p>Get specific/all languages for a specific survey</p>
-     * <p>Nfield API reference:
-     * <ul><li>[GET v1/Surveys/{surveyId}/Languages]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages}</li>
-     * <li>[GET v1/Surveys/{surveyId}/Languages/{languageId}]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyLanguages
-     * @method get
-     * @param {String} surveyId - Survey ID
-     * @param {Number} languageId - Language ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getLanguage (surveyId, languageId, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages'
         .replace('{surveyId}', surveyId);
@@ -340,18 +186,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Removes specified language from the survey</p>
-     * <p>Nfield API reference:
-     * <ul><li>[DELETE v1/Surveys/{surveyId}/Languages/{languageId}]{@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-languages-languageid}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyLanguages
-     * @method remove
-     * @param {String} surveyId - Survey ID
-     * @param {Number} languageId - Language ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function removeLanguage (surveyId, languageId, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages/{languageId}'
         .replace('{surveyId}', surveyId)
@@ -366,19 +200,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Update the name of the specific language in survey</p>
-     * <p>Notice, that 'Default' language name could not be updated</p>
-     * <p>Nfield API reference:
-     * <ul><li>[PUT v1/Surveys/{surveyId}/Languages]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyLanguages
-     * @method update
-     * @param {String} surveyId - Survey ID
-     * @param {LanguageObject} language - Language object
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function updateLanguage (surveyId, language, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages'
         .replace('{surveyId}', surveyId);
@@ -393,18 +214,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Create new language in specific survey</p>
-     * <p>Nfield API reference:
-     * <ul><li>[POST v1/Surveys/{surveyId}/Languages]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyLanguages
-     * @method add
-     * @param {String} surveyId - Survey ID
-     * @param {String} languageName - Language name
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function addLanguage (surveyId, languageName, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Languages'
         .replace('{surveyId}', surveyId);
@@ -421,11 +230,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Survey Languages API
-     * @namespace SurveyLanguages
-     * @memberof NfieldInstance
-     */
     _this.SurveyLanguages = {
       get : getLanguage,
       remove : removeLanguage,
@@ -435,17 +239,6 @@ module.exports = (function Nfield () {
     
     // SurveySettings
     
-    /**
-     * <p>Get survey settings</p>
-     * <p>Nfield API reference:
-     * <ul><li>[GET v1/Surveys/{surveyId}/Settings]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-settings}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveySettings
-     * @method get
-     * @param {String} surveyId - Survey ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getSurveySettings (surveyId, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Settings'
         .replace('{surveyId}', surveyId);
@@ -459,19 +252,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Update survey settings</p>
-     * <p>Settings could be changed one option at a time only, their names are case sensitive</p>
-     * <p>Nfield API reference:
-     * <ul><li>[POST v1/Surveys/{surveyId}/Settings]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-settings}</li></ul>
-     * </p>
-     * @memberof NfieldInstance.SurveySettings
-     * @method update
-     * @param {String} surveyId - Survey ID
-     * @param {SurveySettingObject} option - Survey Setting object
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function updateSurveySettings (surveyId, option, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Settings'
         .replace('{surveyId}', surveyId);
@@ -486,11 +266,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Survey Settings API
-     * @namespace SurveySettings
-     * @memberof NfieldInstance
-     */
     _this.SurveySettings = {
       get : getSurveySettings,
       update : updateSurveySettings
@@ -498,21 +273,6 @@ module.exports = (function Nfield () {
     
     // SamplingPoints
     
-    /**
-     * <p>Get specific/all survey sampling point(s)</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[GET v1/Surveys/{surveyId}/SamplingPoints]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-samplingpoints}</li>
-     *     <li>[GET v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-samplingpoints-samplingpointid}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SamplingPoints
-     * @method get
-     * @param {String} surveyId - Survey ID
-     * @param {String=} samplingPointId - Sampling point ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getSamplingPoints (surveyId, samplingPointId, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints'
         .replace('{surveyId}', surveyId);
@@ -530,20 +290,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Add new sampling point to survey</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[POST v1/Surveys/{surveyId}/SamplingPoints]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-samplingpoints}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SamplingPoints
-     * @method add
-     * @param {String} surveyId - Survey ID
-     * @param {SamplingPointObject} samplingPoint - Sampling Point
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function addSamplingPoints (surveyId, samplingPoint, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints'
         .replace('{surveyId}', surveyId);
@@ -558,21 +304,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Update existing sampling point in survey</p>
-     * <p>You can't update SamplingPointId, Instruction or Kind of existing Sampling Point</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[PATCH v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}]{@link https://api.nfieldmr.com/help/api/patch-v1-surveys-surveyid-samplingpoints-samplingpointid}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SamplingPoints
-     * @method update
-     * @param {String} surveyId - Survey ID
-     * @param {SamplingPointObject} samplingPoint - Sampling Point
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function updateSamplingPoints (surveyId, samplingPoint, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}'
         .replace('{surveyId}', surveyId)
@@ -592,20 +323,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Remove existing sampling point in survey</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[DELETE v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}]{@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-samplingpoints-samplingpointid}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SamplingPoints
-     * @method remove
-     * @param {String} surveyId - Survey ID
-     * @param {String} samplingPointId - Sampling point unique identifier
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function removeSamplingPoints (surveyId, samplingPointId, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/SamplingPoints/{samplingPointId}'
         .replace('{surveyId}', surveyId)
@@ -620,11 +337,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Sampling Points API
-     * @namespace SamplingPoints
-     * @memberof NfieldInstance
-     */
     _this.SamplingPoints = {
       get : getSamplingPoints,
       add : addSamplingPoints,
@@ -634,19 +346,6 @@ module.exports = (function Nfield () {
     
     // SurveyScript
     
-    /**
-     * <p>Get survey script</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[GET v1/Surveys/{surveyId}/Script]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-script}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyScript
-     * @method get
-     * @param {String} surveyId - Survey ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getSurveyScript (surveyId, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Script'
         .replace('{surveyId}', surveyId);
@@ -660,20 +359,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Set/update survey script</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[POST v1/Surveys/{surveyId}/Script]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-script}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyScript
-     * @method update
-     * @param {String} surveyId - Survey ID
-     * @param {SurveyScriptObject} script - The (odin) script for the survey
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function updateSurveyScript (surveyId, script, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Script'
         .replace('{surveyId}', surveyId);
@@ -688,11 +373,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Survey Script API
-     * @namespace SurveyScript
-     * @memberof NfieldInstance
-     */
     _this.SurveyScript = {
       get : getSurveyScript,
       update : updateSurveyScript
@@ -700,20 +380,6 @@ module.exports = (function Nfield () {
     
     // SurveyData
     
-    /**
-     * <p>Request data download for survey</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[POST v1/Surveys/{surveyId}/Data]{@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-data}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyData
-     * @method request
-     * @param {String} surveyId - Survey ID
-     * @param {NfieldDownloadParams} downloadOptions - Download parameters
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function requestSurveyData (surveyId, downloadOptions, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Data'
         .replace('{surveyId}', surveyId);
@@ -728,30 +394,12 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Survey Data API
-     * @namespace SurveyData
-     * @memberof NfieldInstance
-     */
     _this.SurveyData = {
       request : requestSurveyData
     };
     
     // SurveyPublish
     
-    /**
-     * <p>Get publish state of survey</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[GET v1/Surveys/{surveyId}/Publish]{@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-publish}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyScript
-     * @method get
-     * @param {String} surveyId - Survey ID
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function getSurveyPublish (surveyId, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Publish'
         .replace('{surveyId}', surveyId);
@@ -765,20 +413,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /**
-     * <p>Publish survey</p>
-     * <p>Nfield API reference:
-     *   <ul>
-     *     <li>[PUT v1/Surveys/{surveyId}/Publish]{@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-publish}</li>
-     *   </ul>
-     * </p>
-     * @memberof NfieldInstance.SurveyScript
-     * @method publish
-     * @param {String} surveyId - Survey ID
-     * @param {PublishParams} publishParams - Publish parameters
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     function publishSurveyPublish (surveyId, publishParams, callback) {
       var reqURI = 'v1/Surveys/{surveyId}/Publish'
         .replace('{surveyId}', surveyId);
@@ -793,11 +427,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     }
     
-    /** 
-     * Survey Publish API
-     * @namespace SurveyPublish
-     * @memberof NfieldInstance
-     */
     _this.SurveyPublish = {
       get : getSurveyPublish,
       publish : publishSurveyPublish
@@ -805,16 +434,6 @@ module.exports = (function Nfield () {
     
     // Connect to API
     
-    /**
-     * <p>Connects Nfield instance to Nfield API with parameters provided during initialization</p>
-     * <p>Nfield API uses tokens that lasts for 15 minutes for authorisation, so as an options this method allows you to initiate an autoupdate for the token in Nfield instance, that fires every 12 minutes</p>
-     * @memberof NfieldInstance
-     * @method connect
-     * @param {Boolean=} persistant - Initiate an autoupdate for token (true/false)
-     * @param {persistantErrorCallback=} persistantErrorCallback - Callback, that fires if something goes wrong during token update
-     * @param {responseCallback=} callback - Optional node-style callback
-     * @returns {Promise} Returns a promise of the request
-     */
     _this.connect = function connect (persistant, persistantErrorCallback, callback) {
       if (persistant === true && !connectInterval) {
         connectInterval = setInterval(function () {
@@ -850,11 +469,6 @@ module.exports = (function Nfield () {
       }).nodeify(callback);
     };
     
-    /**
-     * Clears persistant token update interval
-     * @memberof NfieldInstance
-     * @method stopPersistant
-     */
     _this.stopPersistant = function stopPersistant () {
       clearInterval(connectInterval);
       connectInterval = null;
@@ -863,14 +477,6 @@ module.exports = (function Nfield () {
     _this.configure(nfieldOptions, requestOptions);
   }
   
-  /**
-   * Creates new [Nfield instance]{@link NfieldInstance} or returns existing one
-   * @memberof Nfield
-   * @method init
-   * @param {NfieldParams} nfieldParams - Parameters to configure Nfield user to use with API, must contain user credentials
-   * @param {Object=} requestParams - Parameters to configure request module, that is used to connect to API
-   * @returns {NfieldInstance} Returns Nfield instance
-   */
   function init (nfieldParams, requestParams) {
     if (!nfieldInstance) {
       nfieldInstance = new NfieldInstance(nfieldParams, requestParams);
@@ -885,103 +491,3 @@ module.exports = (function Nfield () {
   };
   
 })();
-
-/**
- * Token update error callback
- * @memberof NfieldInstance
- * @callback persistantErrorCallback
- * @param {Array} error - Request response array
- */
- 
-/**
- * Response callback
- * @memberof NfieldInstance
- * @callback responseCallback
- * @param {Array} err
- * @param {Array} resp
- */
- 
-/**
- * Parameters to configure Nfield user to use with API, must contain user credentials
- * @memberof NfieldInstance
- * @typedef {Object} NfieldParams
- * @property {Object} credentials - API user credentials
- * @property {String} credentials.Domain - Domain
- * @property {String} credentials.Username - Username
- * @property {String} credentials.Password - Password
- * @property {String} [server=https://api.nfieldmr.com/] - Server URL
- */
- 
-/**
- * <p>Nfield data download parameters</p>
- * <p>Although all booleans are marked as optional, at leat one data type <b>and</b> file type must have 'true' value</p>
- * @memberof NfieldInstance
- * @typedef {Object} NfieldDownloadParams
- * @property {String} SurveyId
- * @property {String} DownloadFileName
- * @property {Boolean=} DownloadTestInterviewData
- * @property {Boolean=} DownloadSuccessfulLiveInterviewData
- * @property {Boolean=} DownloadRejectedLiveInterviewData
- * @property {Boolean=} DownloadNotSuccessfulLiveInterviewData
- * @property {Boolean=} DownloadSuspendedLiveInterviewData
- * @property {Boolean=} DownloadParaData
- * @property {Boolean=} DownloadCapturedMedia
- * @property {Boolean=} DownloadClosedAnswerData
- * @property {Boolean=} DownloadOpenAnswerData
- * @property {UTCDate=} StartDate
- * @property {UTCDate=} EndDate
- */
- 
-/**
- * Translation Object
- * @memberof NfieldInstance
- * @typedef {Object} TranslationObject
- * @property {String} Name - Translation key
- * @property {String} Text - Translation text
- */
- 
-/**
- * Language object
- * @memberof NfieldInstance
- * @typedef {Object} LanguageObject
- * @property {Number} Id - Language ID
- * @property {String} Name - Language name
- */
- 
-/**
- * Survey Setting object
- * @memberof NfieldInstance
- * @typedef {Object} SurveySettingObject
- * @property {String} Name - Option name
- * @property {String} Value - Option value
- */
- 
-/**
- * Оdin script for the survey object
- * @memberof NfieldInstance
- * @typedef {Object} SurveyScriptObject
- * @property {String} Script - Odin script (q-file)
- * @property {String} FileName - File name for script file
- */
-
-/**
- * Sampling Point object
- * @memberof NfieldInstance
- * @typedef {Object} SamplingPointObject
- * @property {String} SamplingPointId - Sampling point unique identifier
- * @property {String} Name - Name of the sampling point
- * @property {String} Description - Desctiption
- * @property {String} Instruction - Instruction link, this is a link to a pdf blob storage.
- * @property {String} FieldworkOfficeId - Associcated fieldwork office id.
- * @property {String} GroupId - Group id
- * @property {String} Stratum - Stratum the sampling point belongs to
- * @property {String} Kind - Kind of the sampling point
- */
- 
-/**
- * Publish parameters
- * @memberof NfieldInstance
- * @typedef {Object} PublishParams
- * @property {Number} PackageType - Interview package type (1 - Live, 2 - Test)
- * @property {Number} ForceUpgrade - Force Upgrade option (0 - false, 1 - true) <i>There is no explanation what this option does on Nfiled API documentation page, but their manager website always publishes with this option turned off with no way to turn it on</i>
- */
