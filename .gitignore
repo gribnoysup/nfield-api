@@ -21,6 +21,7 @@
 ##################
 settings
 db
+temp
 node_modules
 .*
 server.js
