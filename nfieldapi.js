@@ -51,6 +51,30 @@ function NfieldCliConstructor (defOptions) {
     return new NfieldCliConstructor(options);
   };
   
+  /**
+   * Connects NfieldClient to API
+   * Returns ConnectedInstance
+   */
+  this.connect = function connect (credentials, callback) {
+    if (typeof credentials === 'undefined' || typeof credentials === 'function') throw new Error('not all required parameters provided: no `credentials`');
+    if (!credentials.Domain || !credentials.Username || !credentials.Password) throw new Error('not all required parameters provided: no `Domain` or `Username` or `Password`');
+    
+    var token = {};
+    var promise = SignIn(defaultRequestCliOptions, credentials).then(function (data) {
+      if (data[0].statusCode !== 200) {
+        throw new Error(`${data[0].statusCode}: ${data[0].body.Message}`);
+      } else {
+        token = {
+          AuthenticationToken : data[0].body.AuthenticationToken,
+          Timestamp : Date.now()
+        };
+        return new ConnectedInstance(defaultRequestCliOptions, token, credentials);
+      }
+    }).nodeify(callback);
+    
+    return promise;
+  };
+  
 }
 
 module.exports = {
