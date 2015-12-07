@@ -6,6 +6,15 @@ var request = Promise.promisify(require('request'));
 var tokenUpdateTime = 12 * 60 * 1000;
 
 /**
+ * Creates an instance of object, connected to Nfield API
+ */
+function ConnectedInstance (requestOptions, authToken, credentials) {
+  this.__REQUEST_OPTIONS = requestOptions;
+  this.__TOKEN = authToken;
+  this.__CREDENTIALS = credentials;
+}
+
+/**
  * Creates NfieldClient object
  * @constructor NfieldClient
  */
