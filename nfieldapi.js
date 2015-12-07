@@ -48,12 +48,32 @@ function SignIn (defOptions, credentials, callback) {
 }
 
 /**
+ * Returns Nfield Survey Status
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status}
+ */
+function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
+  var options = {
+    method : 'GET',
+    uri : `v1/Surveys/${surveyId}/Fieldwork/Status`,
+    headers : {
+      'Authorization': `Basic ${token.AuthenticationToken}`
+	  }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
  * Creates an instance of object, connected to Nfield API
  */
 function ConnectedInstance (requestOptions, authToken, credentials) {
   this.__REQUEST_OPTIONS = requestOptions;
   this.__TOKEN = authToken;
   this.__CREDENTIALS = credentials;
+  
+  this.SurveyFieldwork = {
+    status : getSurveyStatus.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
+  };
 }
 
 /**
