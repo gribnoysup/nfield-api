@@ -6,6 +6,34 @@ var request = Promise.promisify(require('request'));
 var tokenUpdateTime = 12 * 60 * 1000;
 
 /**
+ * Wrapper function for all Nfield API requests that checks if API token is not outdated, and refreshes it otherwise
+ */
+function requestWithTokenCheck (defOptions, credentials, token, options, callback) {
+  var returnedPromise;
+  var chainedPromise;
+  
+  extend(true, options, defOptions);
+  chainedPromise = request(options);
+  
+  if (Date.now() - token.Timestamp > tokenUpdateTime) {
+    returnedPromise = SignIn(defOptions, credentials).then(function (data) {
+      if (data[0].statusCode !== 200) {
+        throw new Error(`${data[0].statusCode}: ${data[0].body.Message}`);
+      } else {
+        token.AuthenticationToken = data[0].body.AuthenticationToken;
+        token.Timestamp = Date.now();
+        return chainedPromise;
+      }
+    });
+  } else {
+    returnedPromise = chainedPromise;
+  }
+  
+  returnedPromise.nodeify(callback);
+  return returnedPromise;
+}
+
+/**
  * SignIn to Nfield API
  */
 function SignIn (defOptions, credentials, callback) {
