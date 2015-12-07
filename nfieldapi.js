@@ -48,7 +48,8 @@ function SignIn (defOptions, credentials, callback) {
 }
 
 /**
- * Returns Nfield Survey Status
+ * Returns Nfield survey status
+ * 
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status}
  */
 function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
@@ -56,8 +57,49 @@ function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
     method : 'GET',
     uri : `v1/Surveys/${surveyId}/Fieldwork/Status`,
     headers : {
-      'Authorization': `Basic ${token.AuthenticationToken}`
-	  }
+      'Authorization' : `Basic ${token.AuthenticationToken}`
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+
+/**
+ * Starts Nfield survey
+ * 
+ * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start}
+ */
+function startSurvey (defOptions, credentials, token, surveyId, callback) {
+  var options = {
+    method : 'PUT',
+    uri : `v1/Surveys/${surveyId}/Fieldwork/Start`,
+    headers : {
+      'Authorization' : `Basic ${token.AuthenticationToken}`
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Stops Nfield survey
+ * 
+ * Has a 'magical' parameter called TerminateRunningInterviews, that never explained in any part of Nfield API documentation
+ * and doesn't seem to affect anything when changed, but present here for the sake of making requests as close to API docs as possible (defaults to 'false')
+ * 
+ * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop}
+ */
+function stopSurvey (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'PUT',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Fieldwork/Stop`,
+    json : {
+      'TerminateRunningInterviews' : requestParams.TerminateRunningInterviews || false
+    },
+    headers : {
+      'Authorization' : `Basic ${token.AuthenticationToken}`
+    }
   };
   
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
@@ -72,7 +114,9 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
   this.__CREDENTIALS = credentials;
   
   this.SurveyFieldwork = {
-    status : getSurveyStatus.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
+    status : getSurveyStatus.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN),
+    start : startSurvey.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN),
+    stop : stopSurvey.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
   };
 }
 
