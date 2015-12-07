@@ -15,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.x.x",
+    "extend": "^3.0.0",
     "request": "^2.x.x"
   }
 }
