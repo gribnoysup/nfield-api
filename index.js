@@ -26,10 +26,7 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
 function NfieldClient (defOptions) {
   
   var defaultRequestCliOptions = {
-    baseUrl : 'https://api.nfieldmr.com/',
-    headers : {
-      'Content-Type' : 'application/json'
-    }
+    baseUrl : 'https://api.nfieldmr.com/'
   };
   
   extend(true, defaultRequestCliOptions, defOptions);
