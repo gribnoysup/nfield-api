@@ -28,8 +28,6 @@ function requestWithTokenCheck (defOptions, credentials, token, options, callbac
   options.headers = options.headers || {};
   extend(true, options, defOptions);
   
-  options.headers.Authorization = `Basic ${token.AuthenticationToken}`;
-  
   if (Date.now() - token.Timestamp > tokenUpdateTime) {
     returnedPromise = signIn(defOptions, credentials).then(function (data) {
       if (data[0].statusCode !== 200) {
