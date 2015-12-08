@@ -2,7 +2,7 @@
   "name": "nodejs-nfield-api",
   "version": "0.0.0",
   "description": "Module to work with Nfield Manager API with node.js",
-  "main": "nfieldapi.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +11,14 @@
     "api",
     "nodejs"
   ],
-  "author": "Sergey Petushkov",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gribnoysup/nodejs-nfield-api.git"
+  },
+  "engines": {
+    "node": "^4.x.x"
+  },
+  "author": "Sergey Petushkov <petushkov.sergey@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.x.x",
