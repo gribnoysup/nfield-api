@@ -5,6 +5,7 @@ var extend = require('extend');
 
 /**
  * Creates an instance of object, connected to Nfield API
+ * @constructor
  */
 function ConnectedInstance (requestOptions, authToken, credentials) {
   this.__REQUEST_OPTIONS = requestOptions;
@@ -20,9 +21,9 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
 
 /**
  * Creates NfieldClient object
- * @constructor NfieldClient
+ * @constructor
  */
-function NfieldCliConstructor (defOptions) {
+function NfieldClient (defOptions) {
   
   var defaultRequestCliOptions = {
     baseUrl : 'https://api.nfieldmr.com/',
@@ -38,7 +39,7 @@ function NfieldCliConstructor (defOptions) {
    */
   this.defaults = function defaults (options) {
     if (typeof options !== 'object') throw new Error('`options` must be an object with request parameters');
-    return new NfieldCliConstructor(options);
+    return new NfieldClient(options);
   };
   
   /**
@@ -68,5 +69,5 @@ function NfieldCliConstructor (defOptions) {
 }
 
 module.exports = {
-  NfieldClient : new NfieldCliConstructor()
+  NfieldClient : new NfieldClient()
 };
