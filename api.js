@@ -26,6 +26,9 @@ function requestWithTokenCheck (defOptions, credentials, token, options, callbac
   var returnedPromise;
   var chainedPromise;
   
+  options.headers = options.headers || {};
+  options.headers.Authorization = `Basic ${token.AuthenticationToken}`;
+  
   extend(true, options, defOptions);
   chainedPromise = request(options);
   
@@ -55,10 +58,7 @@ function requestWithTokenCheck (defOptions, credentials, token, options, callbac
 function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
   var options = {
     method : 'GET',
-    uri : `v1/Surveys/${surveyId}/Fieldwork/Status`,
-    headers : {
-      'Authorization' : `Basic ${token.AuthenticationToken}`
-    }
+    uri : `v1/Surveys/${surveyId}/Fieldwork/Status`
   };
   
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
@@ -72,10 +72,7 @@ function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
 function startSurvey (defOptions, credentials, token, surveyId, callback) {
   var options = {
     method : 'PUT',
-    uri : `v1/Surveys/${surveyId}/Fieldwork/Start`,
-    headers : {
-      'Authorization' : `Basic ${token.AuthenticationToken}`
-    }
+    uri : `v1/Surveys/${surveyId}/Fieldwork/Start`
   };
   
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
@@ -95,9 +92,6 @@ function stopSurvey (defOptions, credentials, token, requestParams, callback) {
     uri : `v1/Surveys/${requestParams.SurveyId}/Fieldwork/Stop`,
     json : {
       'TerminateRunningInterviews' : requestParams.TerminateRunningInterviews || false
-    },
-    headers : {
-      'Authorization' : `Basic ${token.AuthenticationToken}`
     }
   };
   
