@@ -24,13 +24,11 @@ function signIn (defOptions, credentials, callback) {
  */
 function requestWithTokenCheck (defOptions, credentials, token, options, callback) {
   var returnedPromise;
-  var chainedPromise;
   
   options.headers = options.headers || {};
-  options.headers.Authorization = `Basic ${token.AuthenticationToken}`;
-  
   extend(true, options, defOptions);
-  chainedPromise = request(options);
+  
+  options.headers.Authorization = `Basic ${token.AuthenticationToken}`;
   
   if (Date.now() - token.Timestamp > tokenUpdateTime) {
     returnedPromise = signIn(defOptions, credentials).then(function (data) {
@@ -39,11 +37,13 @@ function requestWithTokenCheck (defOptions, credentials, token, options, callbac
       } else {
         token.AuthenticationToken = data[0].body.AuthenticationToken;
         token.Timestamp = Date.now();
-        return chainedPromise;
+        options.headers.Authorization = `Basic ${token.AuthenticationToken}`;
+        return request(options);
       }
     });
   } else {
-    returnedPromise = chainedPromise;
+    options.headers.Authorization = `Basic ${token.AuthenticationToken}`;
+    returnedPromise = request(options);
   }
   
   returnedPromise.nodeify(callback);
