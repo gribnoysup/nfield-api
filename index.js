@@ -17,6 +17,11 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
     start : API.startSurvey.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN),
     stop : API.stopSurvey.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
   };
+  
+  this.DefaultTexts = {
+    get : API.getDefaultTexts.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
+  };
+  
 }
 
 /**

@@ -96,9 +96,34 @@ function stopSurvey (defOptions, credentials, token, requestParams, callback) {
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Retrieves an array of Default Texts (or a specific Default Text) for domain
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts}
+ * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey}
+ */
+function getDefaultTexts (defOptions, credentials, token, translationKey, callback) {
+  var options;
+  
+  translationKey = translationKey || '';
+  
+  if (typeof translationKey === 'function') {
+    callback = translationKey;
+    translationKey = '';
+  }
+  
+  options = {
+    method : 'GET',
+    uri : `v1/DefaultTexts/${translationKey}`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
 module.exports = {
   signIn : signIn,
   getSurveyStatus : getSurveyStatus,
   startSurvey : startSurvey,
-  stopSurvey : stopSurvey
+  stopSurvey : stopSurvey,
+  getDefaultTexts : getDefaultTexts
 };
