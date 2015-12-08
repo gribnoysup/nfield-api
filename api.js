@@ -1,3 +1,5 @@
+"use strict";
+
 var Promise = require('bluebird');
 var extend = require('extend');
 var request = Promise.promisify(require('request'));
