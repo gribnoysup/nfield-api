@@ -23,6 +23,10 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
     get : API.getDefaultTexts.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
   };
   
+  this.SurveyTranslations = {
+    get : API.getSurveyTranslations.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
+  };
+  
 }
 
 /**

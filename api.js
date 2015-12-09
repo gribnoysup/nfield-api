@@ -120,10 +120,30 @@ function getDefaultTexts (defOptions, credentials, token, translationKey, callba
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Retrieves an array of Survey Translations (or a specific Survey Translation) for specific language in survey
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid-translations}
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid-translations-translationkey}
+ */
+function getSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
+  var options;
+  
+  requestParams.TranslationKey = requestParams.TranslationKey || '';
+  
+  options = {
+    method : 'GET',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations/${requestParams.TranslationKey}`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
 module.exports = {
   signIn : signIn,
   getSurveyStatus : getSurveyStatus,
   startSurvey : startSurvey,
   stopSurvey : stopSurvey,
-  getDefaultTexts : getDefaultTexts
+  getDefaultTexts : getDefaultTexts,
+  getSurveyTranslations : getSurveyTranslations
 };
