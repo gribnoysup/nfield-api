@@ -1,5 +1,5 @@
 {
-  "SurveyFieldworkStop" : {
+  "StopSurveyFieldwork" : {
     "SurveyId" : "",
     "TerminateRunningInterviews" : false
   },
@@ -7,5 +7,10 @@
     "Domain" : "",
     "Username" : "",
     "Password" : ""
+  },
+  "GetSurveyTranslations" : {
+    "SurveyId" : "",
+    "LanguageId" : "",
+    "TranslationKey" : ""
   }
 }
