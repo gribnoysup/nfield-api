@@ -1,0 +1,10 @@
+{
+  "SurveyFieldworkStop" : {
+    "TerminateRunningInterviews" : false
+  },
+  "SignIn" : {
+    "Domain" : "",
+    "Username" : "",
+    "Password" : ""
+  }
+}
