@@ -1,5 +1,6 @@
 {
   "SurveyFieldworkStop" : {
+    "SurveyId" : "",
     "TerminateRunningInterviews" : false
   },
   "SignIn" : {
