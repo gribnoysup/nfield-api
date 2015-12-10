@@ -12,7 +12,7 @@
     "SurveyId" : "",
     "LanguageId" : "",
     "TranslationKey" : ""
-  }
+  },
   "DefaultTexts" : [
     {
       "Name" : "ButtonNext",

@@ -1,7 +1,7 @@
 "use strict";
 
 var API = require('./api.js');
-var nfieldDefaultRequestsBody = require('./requests.json');
+var nfieldDefaults = require('./defaults.json');
 var extend = require('extend');
 
 /**
@@ -77,5 +77,5 @@ function NfieldClient (defOptions) {
 
 module.exports = {
   NfieldClient : new NfieldClient(),
-  REQUESTS : nfieldDefaultRequestsBody
+  DEFAULTS : nfieldDefaults
 };
