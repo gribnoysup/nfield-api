@@ -13,4 +13,94 @@
     "LanguageId" : "",
     "TranslationKey" : ""
   }
+  "DefaultTexts" : [
+    {
+      "Name" : "ButtonNext",
+      "Text" : "Next"
+    },
+    {
+      "Name" : "ButtonBack",
+      "Text" : "Back"
+    },
+    {
+      "Name" : "ButtonClear",
+      "Text" : "Clear"
+    },
+    {
+      "Name" : "ButtonStart",
+      "Text" : "Start"
+    },
+    {
+      "Name" : "ButtonPause",
+      "Text" : "Pause"
+    },
+    {
+      "Name" : "InvalidCategory",
+      "Text" : "The chosen category is not present in the list of available categories."
+    },
+    {
+      "Name" : "ExclusiveCategory",
+      "Text" : "Category {category} cannot be used together with other categories"
+    },
+    {
+      "Name" : "TooManyDigitsFraction",
+      "Text" : "Answer {answer} has too many fractional digits, maximum is {maximumDigits}"
+    },
+    {
+      "Name" : "AnswerTooLong",
+      "Text" : "Answer {answer} is too long, maximum is {numberOfCharacters}"
+    },
+    {
+      "Name" : "MustBeNumeric",
+      "Text" : "Answer {answer} must be numeric"
+    },
+    {
+      "Name" : "MoreThanMaximum",
+      "Text" : "Answer {answer} is too big, maximum is {maximum}"
+    },
+    {
+      "Name" : "LessThanMinimum",
+      "Text" : "Answer {answer} is too small, minimum is {minimum}"
+    },
+    {
+      "Name" : "TooManyDigitsInIntegerPart",
+      "Text" : "Answer {answer} has too many digits, maximum is {maximum}"
+    },
+    {
+      "Name" : "NotInRange",
+      "Text" : "Answer {answer} is not in the permitted range, permitted range is {range}"
+    },
+    {
+      "Name" : "AnswerRequired",
+      "Text" : "An answer is required"
+    },
+    {
+      "Name" : "CategoryAnswerRequired",
+      "Text" : "Please specify an answer for {category}"
+    },
+    {
+      "Name" : "ItemAnswerRequired",
+      "Text" : "Please specify an answer for {item}"
+    },
+    {
+      "Name" : "TooManyAnswers",
+      "Text" : "Too many answers, maximum is {maximum}"
+    },
+    {
+      "Name" : "TooFewAnswers",
+      "Text" : "Too few answers, minimum is {minimum}"
+    },
+    {
+      "Name" : "InterviewButtonUnavailable",
+      "Text" : "Interview button is not available"
+    },
+    {
+      "Name" : "DoNotUseBrowserButtonToNavigate",
+      "Text" : "Do not use browser navigation buttons, use interview buttons instead"
+    },
+    {
+      "Name" : "DoNotUseButtonWithOtherAnswer",
+      "Text" : "The answer \"{item}\" cannot be used in conjunction with other answers"
+    }
+  ]
 }
