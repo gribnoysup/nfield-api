@@ -49,6 +49,11 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
     update : bindAPI(this, API, 'updateSurveySettings')
   };
   
+  this.SurveyScript = {
+    get : bindAPI(this, API, 'getSurveyScript'),
+    update : bindAPI(this, API, 'updateSurveyScript')
+  };
+  
 }
 
 /**

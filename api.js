@@ -289,6 +289,38 @@ function updateSurveySettings (defOptions, credentials, token, requestParams, ca
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Retrieve survey script
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-script}
+ */
+function getSurveyScript (defOptions, credentials, token, surveyId, callback) {
+  var options = {
+    method : 'GET',
+    uri : `v1/Surveys/${surveyId}/Script`
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Update survey script
+ * 
+ * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-script}
+ */
+function updateSurveyScript (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'POST',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Script`,
+    json : {
+      'FileName' : requestParams.FileName,
+      'Script' : requestParams.Script
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
 module.exports = {
   signIn : signIn,
   getSurveyStatus : getSurveyStatus,
@@ -304,5 +336,7 @@ module.exports = {
   updateSurveyLanguages : updateSurveyLanguages,
   removeSurveyLanguages : removeSurveyLanguages,
   getSurveySettings : getSurveySettings,
-  updateSurveySettings : updateSurveySettings
+  updateSurveySettings : updateSurveySettings,
+  getSurveyScript : getSurveyScript,
+  updateSurveyScript : updateSurveyScript
 };
