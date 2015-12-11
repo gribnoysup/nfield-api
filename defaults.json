@@ -47,6 +47,36 @@
     "Id" : "",
     "Name" : ""
   },
+  "UpdateSurveySettings" : {
+    "Name" : "",
+    "Value" : ""
+  },
+  "DefaultSurveySettings" : [ 
+    {
+      "Name" : "LocationTracking",
+      "Value" : "False"
+    },
+    {
+      "Name" : "LocationValidation",
+      "Value" : "False"
+    },
+    {
+      "Name" : "AutomaticSynchronization",
+      "Value" : "False"
+    },
+    {
+      "Name" : "Orientation",
+      "Value" : "Portrait"
+    },
+    {
+      "Name" : "LocationAccuracy",
+      "Value" : ""
+    },
+    {
+      "Name" : "LocationWaitTime",
+      "Value" : "0"
+    }
+  ],
   "DefaultTexts" : [
     {
       "Name" : "ButtonNext",
