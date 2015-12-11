@@ -48,6 +48,7 @@
     "Name" : ""
   },
   "UpdateSurveySettings" : {
+    "SurveyId" : "",
     "Name" : "",
     "Value" : ""
   },
