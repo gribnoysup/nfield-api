@@ -44,6 +44,11 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
     remove : bindAPI(this, API, 'removeSurveyLanguages')
   };
   
+  this.SurveySettings = {
+    get : bindAPI(this, API, 'getSurveySettings'),
+    update : bindAPI(this, API, 'updateSurveySettings')
+  };
+  
 }
 
 /**

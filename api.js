@@ -257,6 +257,38 @@ function removeSurveyLanguages (defOptions, credentials, token, requestParams, c
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Retrieve survey settings
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-settings}
+ */
+function getSurveySettings (defOptions, credentials, token, surveyId, callback) {
+  var options = {
+    method : 'GET',
+    uri : `v1/Surveys/${surveyId}/Settings`
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Update specific survey setting
+ * 
+ * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-settings}
+ */
+function updateSurveySettings (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'POST',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Settings`,
+    json : {
+      'Name' : requestParams.Name,
+      'Value' : requestParams.Value
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
 module.exports = {
   signIn : signIn,
   getSurveyStatus : getSurveyStatus,
@@ -270,5 +302,7 @@ module.exports = {
   getSurveyLanguages : getSurveyLanguages,
   addSurveyLanguages : addSurveyLanguages,
   updateSurveyLanguages : updateSurveyLanguages,
-  removeSurveyLanguages : removeSurveyLanguages
+  removeSurveyLanguages : removeSurveyLanguages,
+  getSurveySettings : getSurveySettings,
+  updateSurveySettings : updateSurveySettings
 };
