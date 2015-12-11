@@ -5,6 +5,13 @@ var nfieldDefaults = require('./defaults.json');
 var extend = require('extend');
 
 /**
+ * A little wrapper for easy binding API functions to ConnectedInstance
+ */
+function bindAPI (self, api, fnName) {
+  return api[fnName].bind(self, self.__REQUEST_OPTIONS, self.__CREDENTIALS, self.__TOKEN);
+}
+
+/**
  * Creates an instance of object, connected to Nfield API
  * @constructor
  */
@@ -14,17 +21,27 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
   this.__CREDENTIALS = credentials;
   
   this.SurveyFieldwork = {
-    status : API.getSurveyStatus.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN),
-    start : API.startSurvey.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN),
-    stop : API.stopSurvey.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
+    status : bindAPI(this, API, 'getSurveyStatus'),
+    start : bindAPI(this, API, 'startSurvey'),
+    stop : bindAPI(this, API, 'stopSurvey')
   };
   
   this.DefaultTexts = {
-    get : API.getDefaultTexts.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
+    get : bindAPI(this, API, 'getDefaultTexts')
   };
   
   this.SurveyTranslations = {
-    get : API.getSurveyTranslations.bind(this, this.__REQUEST_OPTIONS, this.__CREDENTIALS, this.__TOKEN)
+    get : bindAPI(this, API, 'getSurveyTranslations'),
+    add : bindAPI(this, API, 'addSurveyTranslations'),
+    update : bindAPI(this, API, 'updateSurveyTranslations'),
+    remove : bindAPI(this, API, 'removeSurveyTranslations')
+  };
+  
+  this.SurveyLanguages = {
+    get : bindAPI(this, API, 'getSurveyLanguages'),
+    add : bindAPI(this, API, 'addSurveyLanguages'),
+    update : bindAPI(this, API, 'updateSurveyLanguages'),
+    remove : bindAPI(this, API, 'removeSurveyLanguages')
   };
   
 }
