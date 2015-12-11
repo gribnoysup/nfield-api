@@ -13,6 +13,40 @@
     "LanguageId" : "",
     "TranslationKey" : ""
   },
+  "RemoveSurveyTranslations" : {
+    "SurveyId" : "",
+    "LanguageId" : "",
+    "TranslationKey" : ""
+  },
+  "UpdateSurveyTranslations" : {
+    "SurveyId" : "",
+    "LanguageId" : "",
+    "Name" : "",
+    "Text" : ""
+  },
+  "AddSurveyTranslations" : {
+    "SurveyId" : "",
+    "LanguageId" : "",
+    "Name" : "",
+    "Text" : ""
+  },
+  "GetSurveyLanguages" : {
+    "SurveyId" : "",
+    "LanguageId" : ""
+  },
+  "RemoveSurveyLanguages" : {
+    "SurveyId" : "",
+    "LanguageId" : ""
+  },
+  "AddSurveyLanguages" : {
+    "SurveyId" : "",
+    "Name" : ""
+  },
+  "UpdateSurveyLanguages" : {
+    "SurveyId" : "",
+    "Id" : "",
+    "Name" : ""
+  },
   "DefaultTexts" : [
     {
       "Name" : "ButtonNext",
