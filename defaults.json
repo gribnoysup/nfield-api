@@ -52,6 +52,16 @@
     "Name" : "",
     "Value" : ""
   },
+  "UpdateSurveyScript" : {
+    "SurveyId" : "",
+    "FileName" : "",
+    "Script" : ""
+  },
+  "OrientationValue" : [
+    "Portrait",
+    "Landscape",
+    "DeviceOrientation"
+  ],
   "DefaultSurveySettings" : [ 
     {
       "Name" : "LocationTracking",
