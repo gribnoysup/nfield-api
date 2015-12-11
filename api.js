@@ -49,7 +49,7 @@ function requestWithTokenCheck (defOptions, credentials, token, options, callbac
 }
 
 /**
- * Returns Nfield survey status
+ * Return Nfield survey status
  * 
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status}
  */
@@ -63,7 +63,7 @@ function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
 }
 
 /**
- * Starts Nfield survey
+ * Start Nfield survey
  * 
  * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start}
  */
@@ -77,7 +77,7 @@ function startSurvey (defOptions, credentials, token, surveyId, callback) {
 }
 
 /**
- * Stops Nfield survey
+ * Stop Nfield survey
  * 
  * Has a 'magical' parameter called TerminateRunningInterviews, that never explained in any part of Nfield API documentation
  * and doesn't seem to affect anything when changed, but present here for the sake of making requests as close to API docs as possible (defaults to 'false')
@@ -97,7 +97,7 @@ function stopSurvey (defOptions, credentials, token, requestParams, callback) {
 }
 
 /**
- * Retrieves an array of Default Texts (or a specific Default Text) for domain
+ * Retrieve an array of Default Texts (or a specific Default Text) for domain
  * 
  * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts}
  * {@link https://api.nfieldmr.com/help/api/get-v1-defaulttexts-translationkey}
@@ -121,7 +121,7 @@ function getDefaultTexts (defOptions, credentials, token, translationKey, callba
 }
 
 /**
- * Retrieves an array of Survey Translations (or a specific Survey Translation) for specific language in survey
+ * Retrieve an array of Survey Translations (or a specific Survey Translation) for specific language in survey
  * 
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid-translations}
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid-translations-translationkey}
@@ -139,11 +139,136 @@ function getSurveyTranslations (defOptions, credentials, token, requestParams, c
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Add new translation
+ * 
+ * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages-languageid-translations}
+ */
+function addSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'POST',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations`,
+    json : {
+      'Name' : requestParams.Name,
+      'Text' : requestParams.Text
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Update existing translation
+ * 
+ * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages-languageid-translations}
+ */
+function updateSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'PUT',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations`,
+    json : {
+      'Name' : requestParams.Name,
+      'Text' : requestParams.Text
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Remove existing translation
+ * 
+ * {@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-languages-languageid-translations-translationkey}
+ */
+function removeSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'DELETE',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations/${requestParams.TranslationKey}`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Retrieve an array of languages (or a specific language) for survey
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages}
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid}
+ */
+function getSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
+  var options;
+  
+  requestParams.LanguageId = requestParams.LanguageId || '';
+  
+  options = {
+    method : 'GET',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Add new language to survey
+ * 
+ * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages}
+ */
+function addSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'POST',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages`,
+    json : {
+      'Name' : requestParams.Name
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Update existing language
+ * 
+ * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages}
+ */
+function updateSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'PUT',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages`,
+    json : {
+      'Id' : requestParams.Id,
+      'Name' : requestParams.Name
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Remove existing language
+ * 
+ * {@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-languages-languageid}
+ */
+function removeSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'DELETE',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
 module.exports = {
   signIn : signIn,
   getSurveyStatus : getSurveyStatus,
   startSurvey : startSurvey,
   stopSurvey : stopSurvey,
   getDefaultTexts : getDefaultTexts,
-  getSurveyTranslations : getSurveyTranslations
+  getSurveyTranslations : getSurveyTranslations,
+  addSurveyTranslations : addSurveyTranslations,
+  updateSurveyTranslations : updateSurveyTranslations,
+  removeSurveyTranslations : removeSurveyTranslations,
+  getSurveyLanguages : getSurveyLanguages,
+  addSurveyLanguages : addSurveyLanguages,
+  updateSurveyLanguages : updateSurveyLanguages,
+  removeSurveyLanguages : removeSurveyLanguages
 };
