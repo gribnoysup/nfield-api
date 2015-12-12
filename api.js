@@ -321,6 +321,21 @@ function updateSurveyScript (defOptions, credentials, token, requestParams, call
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Post a request for survey data download link
+ * 
+ * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-data}
+ */
+function requestSurveyData (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'POST',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Data`,
+    json : requestParams
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
 module.exports = {
   signIn : signIn,
   getSurveyStatus : getSurveyStatus,
@@ -338,5 +353,6 @@ module.exports = {
   getSurveySettings : getSurveySettings,
   updateSurveySettings : updateSurveySettings,
   getSurveyScript : getSurveyScript,
-  updateSurveyScript : updateSurveyScript
+  updateSurveyScript : updateSurveyScript,
+  requestSurveyData : requestSurveyData
 };
