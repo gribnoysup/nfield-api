@@ -336,6 +336,104 @@ function requestSurveyData (defOptions, credentials, token, requestParams, callb
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Retrieve an array of surveys (or a specific survey) for domain
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys}
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid}
+ */
+function getSurveys (defOptions, credentials, token, surveyId, callback) {
+  var options;
+  
+  surveyId = surveyId || '';
+  
+  options = {
+    method : 'GET',
+    uri : `v1/Surveys/${surveyId}`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Add new survey to domain
+ * 
+ * {@link https://api.nfieldmr.com/help/api/post-v1-surveys}
+ */
+function addSurveys (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'POST',
+    uri : `v1/Surveys`,
+    json : requestParams
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Update survey
+ * 
+ * {@link https://api.nfieldmr.com/help/api/patch-v1-surveys-surveyid}
+ */
+function updateSurveys (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'PATCH',
+    uri : `v1/Surveys/${requestParams.SurveyId}`
+  };
+  
+  delete requestParams.SurveyId;
+  options.json = requestParams;
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Remove survey
+ * 
+ * {@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid}
+ */
+function removeSurveys (defOptions, credentials, token, surveyId, callback) {
+  var options = {
+    method : 'DELETE',
+    uri : `v1/Surveys/${surveyId}`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Get survey publish state
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-publish}
+ */
+function getSurveyPublish (defOptions, credentials, token, surveyId, callback) {
+  var options = {
+    method : 'GET',
+    uri : `v1/Surveys/${surveyId}/Publish`,
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+}
+
+/**
+ * Update survey publish state
+ * `ForceUpgrade` parameter is never explained anywhere in Nfield API docs, but set to 0 in their manager and can't be changed
+ * 
+ * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-publish}
+ */
+function updateSurveyPublish (defOptions, credentials, token, requestParams, callback) {
+  var options = {
+    method : 'PUT',
+    uri : `v1/Surveys/${requestParams.SurveyId}/Publish`,
+    json : {
+      'PackageType' : requestParams.PackageType,
+      'ForceUpgrade' : requestParams.ForceUpgrade
+    }
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback); 
+}
+
 module.exports = {
   signIn : signIn,
   getSurveyStatus : getSurveyStatus,
@@ -354,5 +452,11 @@ module.exports = {
   updateSurveySettings : updateSurveySettings,
   getSurveyScript : getSurveyScript,
   updateSurveyScript : updateSurveyScript,
-  requestSurveyData : requestSurveyData
+  requestSurveyData : requestSurveyData,
+  getSurveys : getSurveys,
+  addSurveys : addSurveys,
+  updateSurveys : updateSurveys,
+  removeSurveys : removeSurveys,
+  getSurveyPublish : getSurveyPublish,
+  updateSurveyPublish : updateSurveyPublish
 };

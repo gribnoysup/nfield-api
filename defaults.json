@@ -73,10 +73,30 @@
     "StartDate" : "",
     "EndDate" : ""
   },
+  "AddSurveys" : {
+    "SurveyId": "",
+    "SurveyName": "",
+    "ClientName": "",
+    "SurveyType": "",
+    "Description": "",
+    "QuestionnaireMD5": "",
+    "InterviewerInstruction": ""
+  },
+  "UpdateSurveyPublish" : {
+    "SurveyId": "",
+    "PackageType" : "",
+    "ForceUpgrade" : ""
+  },
   "OrientationValue" : [
     "Portrait",
     "Landscape",
     "DeviceOrientation"
+  ],
+  "PublishState" : [
+    "Unknown",
+    "Unpublished",
+    "PublishedLatest",
+    "PublishedOutdated"
   ],
   "DefaultSurveySettings" : [ 
     {

@@ -58,6 +58,18 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
     request : bindAPI(this, API, 'requestSurveyData')
   };
   
+  this.Surveys = {
+    get : bindAPI(this, API, 'getSurveys'),
+    add : bindAPI(this, API, 'addSurveys'),
+    update : bindAPI(this, API, 'updateSurveys'),
+    remove : bindAPI(this, API, 'removeSurveys')
+  };
+  
+  this.SurveyPublish = {
+    get : bindAPI(this, API, 'getSurveyPublish'),
+    update : bindAPI(this, API, 'updateSurveyPublish')
+  };
+  
 }
 
 /**
