@@ -57,6 +57,22 @@
     "FileName" : "",
     "Script" : ""
   },
+  "RequestSurveyData" : {
+    "SurveyId" : "",
+    "BackgroundTaskId" : "",
+    "DownloadTestInterviewData" : false,
+    "DownloadSuccessfulLiveInterviewData" : false,
+    "DownloadRejectedLiveInterviewData" : false,
+    "DownloadNotSuccessfulLiveInterviewData" : false,
+    "DownloadSuspendedLiveInterviewData" : false,
+    "DownloadParaData" : false,
+    "DownloadCapturedMedia" : false,
+    "DownloadClosedAnswerData" : false,
+    "DownloadOpenAnswerData" : false,
+    "DownloadFileName" : "",
+    "StartDate" : "",
+    "EndDate" : ""
+  },
   "OrientationValue" : [
     "Portrait",
     "Landscape",
