@@ -347,6 +347,11 @@ function getSurveys (defOptions, credentials, token, surveyId, callback) {
   
   surveyId = surveyId || '';
   
+  if (typeof surveyId === 'function') {
+    callback = surveyId;
+    surveyId = '';
+  }
+  
   options = {
     method : 'GET',
     uri : `v1/Surveys/${surveyId}`,
@@ -395,7 +400,7 @@ function updateSurveys (defOptions, credentials, token, requestParams, callback)
 function removeSurveys (defOptions, credentials, token, surveyId, callback) {
   var options = {
     method : 'DELETE',
-    uri : `v1/Surveys/${surveyId}`,
+    uri : `v1/Surveys/${surveyId}`
   };
   
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
@@ -409,7 +414,7 @@ function removeSurveys (defOptions, credentials, token, surveyId, callback) {
 function getSurveyPublish (defOptions, credentials, token, surveyId, callback) {
   var options = {
     method : 'GET',
-    uri : `v1/Surveys/${surveyId}/Publish`,
+    uri : `v1/Surveys/${surveyId}/Publish`
   };
   
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
@@ -432,6 +437,24 @@ function updateSurveyPublish (defOptions, credentials, token, requestParams, cal
   };
   
   return requestWithTokenCheck(defOptions, credentials, token, options, callback); 
+}
+
+function getBackgroundTasks (defOptions, credentials, token, taskId, callback) {
+  var options;
+  
+  taskId = taskId || '';
+  
+  if (typeof taskId === 'function') {
+    callback = taskId;
+    taskId = '';
+  }
+  
+  options = {
+    method : 'GET',
+    uri : `v1/BackgroundTasks/${taskId}`
+  };
+  
+  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
 module.exports = {
@@ -458,5 +481,6 @@ module.exports = {
   updateSurveys : updateSurveys,
   removeSurveys : removeSurveys,
   getSurveyPublish : getSurveyPublish,
-  updateSurveyPublish : updateSurveyPublish
+  updateSurveyPublish : updateSurveyPublish,
+  getBackgroundTasks : getBackgroundTasks
 };

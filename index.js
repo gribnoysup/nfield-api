@@ -70,6 +70,10 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
     update : bindAPI(this, API, 'updateSurveyPublish')
   };
   
+  this.BackgroundTasks = {
+    get : bindAPI(this, API, 'getBackgroundTasks')
+  };
+  
 }
 
 /**
