@@ -358,6 +358,10 @@ function removeSurveyLanguages (defOptions, credentials, token, requestParams, c
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-settings}
  */
 function getSurveySettings (defOptions, credentials, token, surveyId, callback) {
+  
+  if (typeof surveyId === 'function') callback = surveyId;
+  if (checkRequiredParameter(surveyId)) return Promise.reject(Error(`Missing required parameter 'SurveyId'`)).nodeify(callback);
+  
   var options = {
     method : 'GET',
     uri : `v1/Surveys/${surveyId}/Settings`
@@ -372,16 +376,20 @@ function getSurveySettings (defOptions, credentials, token, surveyId, callback) 
  * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-settings}
  */
 function updateSurveySettings (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'POST',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Settings`,
-    json : {
-      'Name' : requestParams.Name,
-      'Value' : requestParams.Value
-    }
-  };
+    
+  var promise = normalizeRequestParameters(defaults, 'RemoveSurveyLanguages', requestParams).then(function (params) {
+      
+    var options = {
+      method : 'POST',
+      uri : `v1/Surveys/${params.SurveyId}/Settings`,
+      json : params
+    };
+    
+    return options;
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
