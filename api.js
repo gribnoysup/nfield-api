@@ -2,21 +2,65 @@
 
 var Promise = require('bluebird');
 var extend = require('extend');
+var defaults = require('./defaults.json');
+
 var request = Promise.promisify(require('request'));
 var tokenUpdateTime = 12 * 60 * 1000;
 
 /**
- * SignIn to Nfield API
+ * Check if specific required request parameter is valid
+ */
+function checkRequiredParameter (param) {
+  return (
+    typeof param === 'function' || typeof param === 'undefined' || param === '' || param === null || (typeof param === 'number' && isNaN(param))
+  );
+}
+
+/**
+ * Return a promise with normalized request parameters or an error
+ */
+function normalizeRequestParameters (defaultsObject, paramsName, requestParams) {
+  var promise = new Promise(function (resolve, reject) {
+    var defaultParams;
+  
+    if (typeof defaultsObject[paramsName] !== 'object') reject(new Error(`No default parameters for '${paramsName}'`));
+    if (typeof requestParams !== 'object') reject(new Error('No request parameters provided'));
+    
+    defaultParams = extend(Object.create(null), defaultsObject[paramsName]);
+    
+    for (var key in defaultParams) {
+      if (typeof requestParams[key] !== 'undefined') defaultParams[key] = requestParams[key];
+      if (checkRequiredParameter(defaultParams[key])) reject(new Error(`Missing required parameter '${key}'`));
+    }
+    
+    resolve(defaultParams);
+    
+  });
+  
+  return promise;
+}
+
+/**
+ * Sign in to Nfield API
+ * 
+ * {@link https://api.nfieldmr.com/help/api/post-v1-signin}
  */
 function signIn (defOptions, credentials, callback) {
-  var options = {
-    method : 'POST',
-    uri : 'v1/SignIn',
-    json : credentials
-  };
+  var promise = normalizeRequestParameters(defaults, 'SignIn', credentials).then(function (credentials) {
+
+    var options = {
+      method : 'POST',
+      uri : 'v1/SignIn',
+      json : credentials
+    };
+    
+    extend(true, options, defOptions);
+    
+    return options;
+    
+  }).then(request).nodeify(callback);
   
-  extend(true, options, defOptions);
-  return request(options).nodeify(callback);
+  return promise;
 }
 
 /**
@@ -53,7 +97,11 @@ function requestWithTokenCheck (defOptions, credentials, token, options, callbac
  * 
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-fieldwork-status}
  */
-function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
+function statusSurveyFieldwork (defOptions, credentials, token, surveyId, callback) {
+  
+  if (typeof surveyId === 'function') callback = surveyId;
+  if (checkRequiredParameter(surveyId)) return Promise.reject(new Error(`Missing required parameter 'SurveyId'`)).nodeify(callback);
+  
   var options = {
     method : 'GET',
     uri : `v1/Surveys/${surveyId}/Fieldwork/Status`
@@ -67,7 +115,11 @@ function getSurveyStatus (defOptions, credentials, token, surveyId, callback) {
  * 
  * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-start}
  */
-function startSurvey (defOptions, credentials, token, surveyId, callback) {
+function startSurveyFieldwork (defOptions, credentials, token, surveyId, callback) {
+  
+  if (typeof surveyId === 'function') callback = surveyId;
+  if (checkRequiredParameter(surveyId)) return Promise.reject(Error(`Missing required parameter 'SurveyId'`)).nodeify(callback);
+  
   var options = {
     method : 'PUT',
     uri : `v1/Surveys/${surveyId}/Fieldwork/Start`
@@ -84,16 +136,21 @@ function startSurvey (defOptions, credentials, token, surveyId, callback) {
  * 
  * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-fieldwork-stop}
  */
-function stopSurvey (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'PUT',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Fieldwork/Stop`,
-    json : {
-      'TerminateRunningInterviews' : requestParams.TerminateRunningInterviews || false
-    }
-  };
+function stopSurveyFieldwork (defOptions, credentials, token, requestParams, callback) {
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'StopSurveyFieldwork', requestParams).then(function (params) {
+    
+    var options = {
+      method : 'PUT',
+      uri : `v1/Surveys/${params.SurveyId}/Fieldwork/Stop`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -459,9 +516,9 @@ function getBackgroundTasks (defOptions, credentials, token, taskId, callback) {
 
 module.exports = {
   signIn : signIn,
-  getSurveyStatus : getSurveyStatus,
-  startSurvey : startSurvey,
-  stopSurvey : stopSurvey,
+  statusSurveyFieldwork : statusSurveyFieldwork,
+  startSurveyFieldwork : startSurveyFieldwork,
+  stopSurveyFieldwork : stopSurveyFieldwork,
   getDefaultTexts : getDefaultTexts,
   getSurveyTranslations : getSurveyTranslations,
   addSurveyTranslations : addSurveyTranslations,

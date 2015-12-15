@@ -21,9 +21,9 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
   this.__CREDENTIALS = credentials;
   
   this.SurveyFieldwork = {
-    status : bindAPI(this, API, 'getSurveyStatus'),
-    start : bindAPI(this, API, 'startSurvey'),
-    stop : bindAPI(this, API, 'stopSurvey')
+    status : bindAPI(this, API, 'statusSurveyFieldwork'),
+    start : bindAPI(this, API, 'startSurveyFieldwork'),
+    stop : bindAPI(this, API, 'stopSurveyFieldwork')
   };
   
   this.DefaultTexts = {
@@ -101,8 +101,6 @@ function NfieldClient (defOptions) {
    * Returns ConnectedInstance
    */
   this.connect = function connect (credentials, callback) {
-    if (typeof credentials === 'undefined' || typeof credentials === 'function') throw new Error('not all required parameters provided: no `credentials`');
-    if (!credentials.Domain || !credentials.Username || !credentials.Password) throw new Error('not all required parameters provided: no `Domain` or `Username` or `Password`');
     
     var token = {};
     var promise = API.signIn(defaultRequestCliOptions, credentials).then(function (data) {
