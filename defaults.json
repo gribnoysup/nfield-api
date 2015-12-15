@@ -11,7 +11,7 @@
   "GetSurveyTranslations" : {
     "SurveyId" : "",
     "LanguageId" : "",
-    "TranslationKey" : ""
+    "TranslationKey" : "__optional"
   },
   "RemoveSurveyTranslations" : {
     "SurveyId" : "",

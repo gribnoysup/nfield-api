@@ -31,6 +31,7 @@ function normalizeRequestParameters (defaultsObject, paramsName, requestParams) 
     for (var key in defaultParams) {
       if (typeof requestParams[key] !== 'undefined') defaultParams[key] = requestParams[key];
       if (checkRequiredParameter(defaultParams[key])) reject(new Error(`Missing required parameter '${key}'`));
+      if (defaultParams[key] === '__optional') defaultParams[key] = '';
     }
     
     resolve(defaultParams);
@@ -184,16 +185,19 @@ function getDefaultTexts (defOptions, credentials, token, translationKey, callba
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid-translations-translationkey}
  */
 function getSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
-  var options;
   
-  requestParams.TranslationKey = requestParams.TranslationKey || '';
+  var promise = normalizeRequestParameters(defaults, 'GetSurveyTranslations', requestParams).then(function (params) {
+    
+    var options = {
+      method : 'GET',
+      uri : `v1/Surveys/${params.SurveyId}/Languages/${params.LanguageId}/Translations/${params.TranslationKey}`,
+    };
+    
+    return options;
   
-  options = {
-    method : 'GET',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations/${requestParams.TranslationKey}`,
-  };
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  return promise;
 }
 
 /**
@@ -202,16 +206,20 @@ function getSurveyTranslations (defOptions, credentials, token, requestParams, c
  * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages-languageid-translations}
  */
 function addSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'POST',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations`,
-    json : {
-      'Name' : requestParams.Name,
-      'Text' : requestParams.Text
-    }
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'AddSurveyTranslations', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'POST',
+      uri : `v1/Surveys/${params.SurveyId}/Languages/${params.LanguageId}/Translations`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -220,16 +228,20 @@ function addSurveyTranslations (defOptions, credentials, token, requestParams, c
  * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages-languageid-translations}
  */
 function updateSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'PUT',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations`,
-    json : {
-      'Name' : requestParams.Name,
-      'Text' : requestParams.Text
-    }
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'UpdateSurveyTranslations', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'PUT',
+      uri : `v1/Surveys/${params.SurveyId}/Languages/${params.LanguageId}/Translations`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -238,12 +250,19 @@ function updateSurveyTranslations (defOptions, credentials, token, requestParams
  * {@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-languages-languageid-translations-translationkey}
  */
 function removeSurveyTranslations (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'DELETE',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}/Translations/${requestParams.TranslationKey}`,
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'RemoveSurveyTranslations', requestParams).then(function (params) {
+    
+    var options = {
+      method : 'DELETE',
+      uri : `v1/Surveys/${params.SurveyId}/Languages/${params.LanguageId}/Translations/${params.TranslationKey}`,
+    };
+    
+    return options;
+    
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options, callback)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
