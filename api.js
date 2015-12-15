@@ -377,7 +377,7 @@ function getSurveySettings (defOptions, credentials, token, surveyId, callback) 
  */
 function updateSurveySettings (defOptions, credentials, token, requestParams, callback) {
     
-  var promise = normalizeRequestParameters(defaults, 'RemoveSurveyLanguages', requestParams).then(function (params) {
+  var promise = normalizeRequestParameters(defaults, 'UpdateSurveySettings', requestParams).then(function (params) {
       
     var options = {
       method : 'POST',
@@ -398,6 +398,10 @@ function updateSurveySettings (defOptions, credentials, token, requestParams, ca
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-script}
  */
 function getSurveyScript (defOptions, credentials, token, surveyId, callback) {
+  
+  if (typeof surveyId === 'function') callback = surveyId;
+  if (checkRequiredParameter(surveyId)) return Promise.reject(Error(`Missing required parameter 'SurveyId'`)).nodeify(callback);
+  
   var options = {
     method : 'GET',
     uri : `v1/Surveys/${surveyId}/Script`
@@ -412,16 +416,20 @@ function getSurveyScript (defOptions, credentials, token, surveyId, callback) {
  * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-script}
  */
 function updateSurveyScript (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'POST',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Script`,
-    json : {
-      'FileName' : requestParams.FileName,
-      'Script' : requestParams.Script
-    }
-  };
+    
+  var promise = normalizeRequestParameters(defaults, 'UpdateSurveySettings', requestParams).then(function (params) {
+    
+    var options = {
+      method : 'POST',
+      uri : `v1/Surveys/${params.SurveyId}/Script`,
+      json : params
+    };
+    
+    return options;
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
