@@ -260,7 +260,7 @@ function removeSurveyTranslations (defOptions, credentials, token, requestParams
     
     return options;
     
-  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options, callback)).nodeify(callback);
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
   
   return promise;
 }
@@ -272,16 +272,19 @@ function removeSurveyTranslations (defOptions, credentials, token, requestParams
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-languages-languageid}
  */
 function getSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
-  var options;
   
-  requestParams.LanguageId = requestParams.LanguageId || '';
+  var promise = normalizeRequestParameters(defaults, 'GetSurveyLanguages', requestParams).then(function (params) {
+    
+    var options = {
+      method : 'GET',
+      uri : `v1/Surveys/${params.SurveyId}/Languages/${params.LanguageId}`,
+    };
+    
+    return options;
   
-  options = {
-    method : 'GET',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}`,
-  };
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  return promise;
 }
 
 /**
@@ -290,15 +293,20 @@ function getSurveyLanguages (defOptions, credentials, token, requestParams, call
  * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-languages}
  */
 function addSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'POST',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages`,
-    json : {
-      'Name' : requestParams.Name
-    }
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'AddSurveyLanguages', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'POST',
+      uri : `v1/Surveys/${params.SurveyId}/Languages`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -307,16 +315,20 @@ function addSurveyLanguages (defOptions, credentials, token, requestParams, call
  * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-languages}
  */
 function updateSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'PUT',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages`,
-    json : {
-      'Id' : requestParams.Id,
-      'Name' : requestParams.Name
-    }
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'UpdateSurveyLanguages', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'PUT',
+      uri : `v1/Surveys/${params.SurveyId}/Languages`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -325,12 +337,19 @@ function updateSurveyLanguages (defOptions, credentials, token, requestParams, c
  * {@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid-languages-languageid}
  */
 function removeSurveyLanguages (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'DELETE',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Languages/${requestParams.LanguageId}`,
-  };
+    
+  var promise = normalizeRequestParameters(defaults, 'RemoveSurveyLanguages', requestParams).then(function (params) {
+    
+    var options = {
+      method : 'DELETE',
+      uri : `v1/Surveys/${params.SurveyId}/Languages/${params.LanguageId}`,
+    };
+    
+    return options;
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**

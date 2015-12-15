@@ -32,7 +32,7 @@
   },
   "GetSurveyLanguages" : {
     "SurveyId" : "",
-    "LanguageId" : ""
+    "LanguageId" : "__optional"
   },
   "RemoveSurveyLanguages" : {
     "SurveyId" : "",
