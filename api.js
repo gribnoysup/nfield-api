@@ -2,7 +2,7 @@
 
 var Promise = require('bluebird');
 var extend = require('extend');
-var defaults = require('./defaults.json');
+var defaults = extend(Object.create(null), require('./defaults.json'));
 
 var request = Promise.promisify(require('request'));
 var tokenUpdateTime = 12 * 60 * 1000;
@@ -438,13 +438,20 @@ function updateSurveyScript (defOptions, credentials, token, requestParams, call
  * {@link https://api.nfieldmr.com/help/api/post-v1-surveys-surveyid-data}
  */
 function requestSurveyData (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'POST',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Data`,
-    json : requestParams
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'RequestSurveyData', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'POST',
+      uri : `v1/Surveys/${params.SurveyId}/Data`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -477,13 +484,20 @@ function getSurveys (defOptions, credentials, token, surveyId, callback) {
  * {@link https://api.nfieldmr.com/help/api/post-v1-surveys}
  */
 function addSurveys (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'POST',
-    uri : `v1/Surveys`,
-    json : requestParams
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+  var promise = normalizeRequestParameters(defaults, 'AddSurveys', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'POST',
+      uri : `v1/Surveys`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -492,15 +506,22 @@ function addSurveys (defOptions, credentials, token, requestParams, callback) {
  * {@link https://api.nfieldmr.com/help/api/patch-v1-surveys-surveyid}
  */
 function updateSurveys (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'PATCH',
-    uri : `v1/Surveys/${requestParams.SurveyId}`
-  };
   
-  delete requestParams.SurveyId;
-  options.json = requestParams;
+  var promise = normalizeRequestParameters(defaults, 'UpdateSurveys', requestParams).then(function (params) {
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback);
+    var options = {
+      method : 'PATCH',
+      uri : `v1/Surveys/${params.SurveyId}`
+    };
+    
+    delete params.SurveyId;
+    options.json = params;
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
 /**
@@ -509,6 +530,10 @@ function updateSurveys (defOptions, credentials, token, requestParams, callback)
  * {@link https://api.nfieldmr.com/help/api/delete-v1-surveys-surveyid}
  */
 function removeSurveys (defOptions, credentials, token, surveyId, callback) {
+  
+  if (typeof surveyId === 'function') callback = surveyId;
+  if (checkRequiredParameter(surveyId)) return Promise.reject(Error(`Missing required parameter 'SurveyId'`)).nodeify(callback);
+  
   var options = {
     method : 'DELETE',
     uri : `v1/Surveys/${surveyId}`
@@ -523,6 +548,10 @@ function removeSurveys (defOptions, credentials, token, surveyId, callback) {
  * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-publish}
  */
 function getSurveyPublish (defOptions, credentials, token, surveyId, callback) {
+  
+  if (typeof surveyId === 'function') callback = surveyId;
+  if (checkRequiredParameter(surveyId)) return Promise.reject(Error(`Missing required parameter 'SurveyId'`)).nodeify(callback);
+  
   var options = {
     method : 'GET',
     uri : `v1/Surveys/${surveyId}/Publish`
@@ -538,18 +567,28 @@ function getSurveyPublish (defOptions, credentials, token, surveyId, callback) {
  * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-publish}
  */
 function updateSurveyPublish (defOptions, credentials, token, requestParams, callback) {
-  var options = {
-    method : 'PUT',
-    uri : `v1/Surveys/${requestParams.SurveyId}/Publish`,
-    json : {
-      'PackageType' : requestParams.PackageType,
-      'ForceUpgrade' : requestParams.ForceUpgrade
-    }
-  };
   
-  return requestWithTokenCheck(defOptions, credentials, token, options, callback); 
+  var promise = normalizeRequestParameters(defaults, 'UpdateSurveyPublish', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'PUT',
+      uri : `v1/Surveys/${params.SurveyId}/Publish`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
 }
 
+/**
+ * Retrieve an array of domain background tasks (or a specific task)
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-backgroundtasks}
+ * {@link https://api.nfieldmr.com/help/api/get-v1-backgroundtasks-taskid}
+ */
 function getBackgroundTasks (defOptions, credentials, token, taskId, callback) {
   var options;
   

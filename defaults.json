@@ -59,7 +59,7 @@
   },
   "RequestSurveyData" : {
     "SurveyId" : "",
-    "BackgroundTaskId" : "",
+    "BackgroundTaskId" : "__optional",
     "DownloadTestInterviewData" : false,
     "DownloadSuccessfulLiveInterviewData" : false,
     "DownloadRejectedLiveInterviewData" : false,
@@ -70,22 +70,31 @@
     "DownloadClosedAnswerData" : false,
     "DownloadOpenAnswerData" : false,
     "DownloadFileName" : "",
-    "StartDate" : "",
-    "EndDate" : ""
+    "StartDate" : "__optional",
+    "EndDate" : "__optional"
   },
   "AddSurveys" : {
-    "SurveyId": "",
+    "SurveyId": "__optional",
     "SurveyName": "",
-    "ClientName": "",
-    "SurveyType": "",
-    "Description": "",
-    "QuestionnaireMD5": "",
-    "InterviewerInstruction": ""
+    "ClientName": "__optional",
+    "SurveyType": "Basic",
+    "Description": "__optional",
+    "QuestionnaireMD5": "__optional",
+    "InterviewerInstruction": "__optional"
+  },
+  "UpdateSurveys" : {
+    "SurveyId": "",
+    "SurveyName": "__optional",
+    "ClientName": "__optional",
+    "SurveyType": "__optional",
+    "Description": "__optional",
+    "QuestionnaireMD5": "__optional",
+    "InterviewerInstruction": "__optional"
   },
   "UpdateSurveyPublish" : {
     "SurveyId": "",
     "PackageType" : "",
-    "ForceUpgrade" : ""
+    "ForceUpgrade" : 0
   },
   "OrientationValue" : [
     "Portrait",
