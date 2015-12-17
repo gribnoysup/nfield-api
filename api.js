@@ -8,6 +8,19 @@ var request = Promise.promisify(require('request'));
 var tokenUpdateTime = 12 * 60 * 1000;
 
 /**
+ * Missing required parameter Error subclass
+ */
+class RequiredError extends Error {
+  constructor(message, propertyName, propertyValue) {
+    super(message);
+    this.message = message;
+    this.name = 'RequiredError';
+    this.propertyName = propertyName;
+    this.propertyValue = propertyValue;
+  }
+}
+
+/**
  * Check if specific required request parameter is valid
  */
 function checkRequiredParameter (param) {
@@ -23,14 +36,17 @@ function normalizeRequestParameters (defaultsObject, paramsName, requestParams) 
   var promise = new Promise(function (resolve, reject) {
     var defaultParams;
   
-    if (typeof defaultsObject[paramsName] !== 'object') reject(new Error(`No default parameters for '${paramsName}'`));
-    if (typeof requestParams !== 'object') reject(new Error('No request parameters provided'));
+    if (typeof defaultsObject[paramsName] !== 'object') reject(new RequiredError(`No default parameters for '${paramsName}'`, paramsName, defaultsObject[paramsName]));
+    if (typeof requestParams !== 'object') reject(new RequiredError('No request parameters provided', 'requestParams', requestParams));
     
     defaultParams = extend(Object.create(null), defaultsObject[paramsName]);
     
     for (var key in defaultParams) {
-      if (typeof requestParams[key] !== 'undefined') defaultParams[key] = requestParams[key];
-      if (checkRequiredParameter(defaultParams[key])) reject(new Error(`Missing required parameter '${key}'`));
+      if (checkRequiredParameter(requestParams[key]) && defaultParams[key] === '') {
+        reject(new RequiredError(`Missing required parameter '${key}'`, key, requestParams[key]));
+      } else if (!checkRequiredParameter(requestParams[key])) {
+        defaultParams[key] = requestParams[key];
+      }
       if (defaultParams[key] === '__optional') defaultParams[key] = '';
     }
     
