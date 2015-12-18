@@ -103,7 +103,11 @@ function NfieldClient (defOptions) {
   this.connect = function connect (credentials, callback) {
     
     var token = {};
-    var promise = API.signIn(defaultRequestCliOptions, credentials).then(function (data) {
+    var promise;
+    
+    if (typeof credentials === 'function') callback = credentials;
+    
+    promise = API.signIn(defaultRequestCliOptions, credentials).then(function (data) {
       if (data[0].statusCode !== 200) {
         throw new Error(`${data[0].statusCode}: ${data[0].body.Message}`);
       } else {
