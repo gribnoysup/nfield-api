@@ -92,7 +92,7 @@ function NfieldClient (defOptions) {
    * Returns a new instance of NfieldClient with new request parameters
    */
   this.defaults = function defaults (options) {
-    if (typeof options !== 'object') throw new Error('`options` must be an object with request parameters');
+    if (typeof options !== 'object') throw new TypeError('`options` must be an object with request parameters');
     return new NfieldClient(options);
   };
   
