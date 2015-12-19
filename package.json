@@ -24,5 +24,9 @@
     "bluebird": "^2.x.x",
     "extend": "^3.0.0",
     "request": "^2.x.x"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "nock": "^3.5.0"
   }
 }
