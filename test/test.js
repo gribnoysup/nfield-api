@@ -1,8 +1,10 @@
+"use strict";
+
 var nfieldCli = require('../index.js').NfieldClient;
 var nock = require('nock');
 var expect = require('chai').expect;
 
-var token = { AuthenticationToken : 'mocked token' };
+var token = { AuthenticationToken : 'iamamockedtoken' };
 
 var credentials;
 
@@ -64,8 +66,8 @@ describe('NfieldClient', function () {
       delete credentials.Domain;
       
       nfieldCli.connect(credentials).then(done).catch(function (error) {
-        expect(error).to.have.property('name');
-        expect(error.name).to.equal('RequiredError');
+        expect(error).to.have.property('name', 'RequiredError');
+        expect(error).to.have.property('propertyName', 'Domain');
         done();
       });
     });
