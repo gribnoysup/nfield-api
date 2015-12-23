@@ -89,6 +89,11 @@ function NfieldClient (defOptions) {
   extend(true, defaultRequestCliOptions, defOptions);
   
   /**
+   * Sign In api method provided strait with NfieldCliend instance because it doesn't need authentication
+   */
+  this.SignIn = API.signIn.bind(null, defaultRequestCliOptions);
+  
+  /**
    * Returns a new instance of NfieldClient with new request parameters
    */
   this.defaults = function defaults (options) {
