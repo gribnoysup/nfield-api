@@ -57,6 +57,15 @@
     "FileName" : "",
     "Script" : ""
   },
+  "GetInterviewQuality" : {
+    "SurveyId" : "",
+    "InterviewId": "__optional"
+  },
+  "UpdateInterviewQuality" : {
+    "SurveyId" : "",
+    "InterviewId": "",
+    "NewState": 0
+  },
   "RequestSurveyData" : {
     "SurveyId" : "",
     "BackgroundTaskId" : "__optional",
@@ -96,6 +105,12 @@
     "PackageType" : "",
     "ForceUpgrade" : 0
   },
+  "InterviewQuality" : [
+    "Not checked",
+    "Approved",
+    "Unverified",
+    "Rejected"
+  ],
   "OrientationValue" : [
     "Portrait",
     "Landscape",

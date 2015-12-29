@@ -74,6 +74,11 @@ function ConnectedInstance (requestOptions, authToken, credentials) {
     get : bindAPI(this, API, 'getBackgroundTasks')
   };
   
+  this.InterviewQuality = {
+    get : bindAPI(this, API, 'getInterviewQuality'),
+    update : bindAPI(this, API, 'updateInterviewQuality')
+  };
+  
 }
 
 /**

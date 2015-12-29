@@ -623,6 +623,51 @@ function getBackgroundTasks (defOptions, credentials, token, taskId, callback) {
   return requestWithTokenCheck(defOptions, credentials, token, options, callback);
 }
 
+/**
+ * Retrieve an array of completed interviews (or a specific interviews) for specific survey
+ * 
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-interviewquality}
+ * {@link https://api.nfieldmr.com/help/api/get-v1-surveys-surveyid-interviewquality-interviewid}
+ */
+function getInterviewQuality (defOptions, credentials, token, requestParams, callback) {
+  
+  var promise = normalizeRequestParameters(defaults, 'GetInterviewQuality', requestParams).then(function (params) {
+    
+    var options = {
+      method : 'GET',
+      uri : `v1/Surveys/${params.SurveyId}/InterviewQuality/${params.InterviewId}`,
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
+}
+
+/**
+ * Update interview quality status
+ * `InterviewId` is an INTNR number from survey data, that must be passed as 8 characters length string with leading zeroes
+ * 
+ * {@link https://api.nfieldmr.com/help/api/put-v1-surveys-surveyid-interviewquality}
+ */
+function updateInterviewQuality (defOptions, credentials, token, requestParams, callback) {
+  
+  var promise = normalizeRequestParameters(defaults, 'UpdateInterviewQuality', requestParams).then(function (params) {
+  
+    var options = {
+      method : 'PUT',
+      uri : `v1/Surveys/${params.SurveyId}/InterviewQuality`,
+      json : params
+    };
+    
+    return options;
+  
+  }).then(options => requestWithTokenCheck(defOptions, credentials, token, options)).nodeify(callback);
+  
+  return promise;
+}
+
 module.exports = {
   signIn : signIn,
   statusSurveyFieldwork : statusSurveyFieldwork,
@@ -648,5 +693,7 @@ module.exports = {
   removeSurveys : removeSurveys,
   getSurveyPublish : getSurveyPublish,
   updateSurveyPublish : updateSurveyPublish,
-  getBackgroundTasks : getBackgroundTasks
+  getBackgroundTasks : getBackgroundTasks,
+  getInterviewQuality : getInterviewQuality,
+  updateInterviewQuality : updateInterviewQuality
 };
