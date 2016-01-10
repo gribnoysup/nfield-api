@@ -10,8 +10,8 @@ var credentials;
 
 describe('NfieldClient', function () {
   
-  it('should have two methods: \'connect\' and \'defaults\'', function () {
-    expect(nfieldCli).to.have.all.keys('defaults', 'connect');
+  it('should have three methods: \'SignIn\', \'connect\' and \'defaults\'', function () {
+    expect(nfieldCli).to.have.all.keys('SignIn', 'defaults', 'connect');
   });
   
   describe('defaults', function () {
@@ -28,7 +28,7 @@ describe('NfieldClient', function () {
     it('should return a new instance of \'NfieldClient\' with updated default request options', function (done) {
       var newCli = nfieldCli.defaults({ baseUrl : 'https://api.anothernfieldserver.com/' });
       
-      expect(newCli).to.have.all.keys('defaults', 'connect');
+      expect(newCli).to.have.all.keys('SignIn', 'defaults', 'connect');
       
       newCli.connect(credentials).then(function (result) {
         expect(result).to.contain.all.keys('__TOKEN', '__REQUEST_OPTIONS', '__CREDENTIALS');
