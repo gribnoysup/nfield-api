@@ -30,16 +30,54 @@ function checkRequiredParameter (param) {
 }
 
 /**
+ * Check if default parameters has only one required param
+ * 
+ * Returns false if there are more than one, or a param name if there is only one
+ */
+function checkIfOnlyOneRequired (defaultParams) {
+  var keys = Object.keys(defaultParams);
+  var i, key;
+  var onlyOne = '';
+  
+  for (i = 0; i < keys.length; i++){
+    key = keys[i];
+    if (defaultParams[key] === '') {
+      if (onlyOne !== '') return false;
+      onlyOne = key;
+    }
+  }
+  
+  return onlyOne;
+}
+
+/**
  * Return a promise with normalized request parameters or an error
  */
 function normalizeRequestParameters (defaultsObject, paramsName, requestParams) {
   var promise = new Promise(function (resolve, reject) {
     var defaultParams;
+    var onlyOne;
   
+    // First check if we have a default parameters object with this name
     if (typeof defaultsObject[paramsName] !== 'object') reject(new RequiredError(`No default parameters for '${paramsName}'`, paramsName, defaultsObject[paramsName]));
-    if (typeof requestParams !== 'object') reject(new RequiredError('No request parameters provided', 'requestParams', requestParams));
     
+    // Create an empty object with default parameters
     defaultParams = extend(Object.create(null), defaultsObject[paramsName]);
+    
+    // Check if there is only one required parameter in defaults
+    onlyOne = checkIfOnlyOneRequired(defaultParams);
+    
+    // If checked parameters are not an object
+    if (typeof requestParams !== 'object') {
+      // If they are a string or a valid number and there is only one required parameter in default parameters
+      if ((typeof requestParams === 'string' || (typeof requestParams === 'number' && isNaN(requestParams))) && onlyOne !== false) {
+        // Provide this value as a value in the default params
+        defaultParams[onlyOne] = requestParams;
+      } else {
+        // Reject with error in other case
+        reject(new RequiredError('No request parameters provided', 'requestParams', requestParams));
+      }
+    }
     
     for (var key in defaultParams) {
       if (checkRequiredParameter(requestParams[key]) && defaultParams[key] === '') {
