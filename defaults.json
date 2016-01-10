@@ -105,6 +105,13 @@
     "PackageType" : "",
     "ForceUpgrade" : 0
   },
+  "SurveyFieldworkStatus" : [
+    "Under Construction",
+    "Started",
+    "",
+    "Closed",
+    "Finished"
+  ],
   "InterviewQuality" : [
     "Not checked",
     "Approved",
