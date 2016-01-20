@@ -471,7 +471,7 @@ function getSurveyScript (defOptions, credentials, token, surveyId, callback) {
  */
 function updateSurveyScript (defOptions, credentials, token, requestParams, callback) {
     
-  var promise = normalizeRequestParameters(defaults, 'UpdateSurveySettings', requestParams).then(function (params) {
+  var promise = normalizeRequestParameters(defaults, 'UpdateSurveyScript', requestParams).then(function (params) {
     
     var options = {
       method : 'POST',
